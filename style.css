@@ -1,4 +1,4 @@
-﻿/* Basic Reset */
+/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -10,6 +10,46 @@ body {
   line-height: 1.6;
   background-color: #f5f5f5;
   color: #333;
+  scroll-behavior: smooth;
+}
+
+/* Navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.navbar .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar .nav-links a:hover {
+  color: #ffa500;
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
 }
 
 /* Header */
@@ -17,12 +57,13 @@ header {
   position: relative;
   text-align: center;
   color: white;
-  padding: 60px 20px;
+  padding: 100px 20px;
+  overflow: hidden;
 }
 
 .header-bg {
   width: 100%;
-  height: 300px;
+  height: 100%;
   object-fit: cover;
   position: absolute;
   top: 0;
@@ -30,25 +71,51 @@ header {
   z-index: -1;
 }
 
-.header-content {
-  position: relative;
-  z-index: 1;
+.header-content h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
 }
 
-.shop-button {
+.shop-button, .chat-button {
   display: inline-block;
-  margin-top: 20px;
+  margin: 15px 10px 0 10px;
   background-color: #000;
   color: #fff;
   padding: 12px 24px;
   text-decoration: none;
   font-weight: bold;
-  border-radius: 4px;
+  border-radius: 25px;
+  transition: 0.3s;
 }
 
-/* Products Section */
+.shop-button:hover, .chat-button:hover {
+  background-color: #ffa500;
+  color: #000;
+}
+
+/* Scroll down arrow */
+.scroll-down {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: bounce 2s infinite;
+}
+
+.scroll-down i {
+  font-size: 30px;
+  color: #fff;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+/* Products */
 .products {
-  padding: 40px 20px;
+  padding: 60px 20px;
   text-align: center;
   background-color: #fff;
 }
@@ -62,44 +129,71 @@ header {
 }
 
 .product {
-  width: 200px;
+  width: 220px;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.product:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
 .product img {
   width: 100%;
-  height: auto;
   border-radius: 8px;
 }
 
-.product p {
-  margin-top: 10px;
-  font-weight: bold;
+.icon-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ffa500;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  color: #fff;
 }
 
-/* CEO Section */
-.ceo {
-  padding: 40px 20px;
+.icon-btn:hover {
+  background-color: #ff7f00;
+}
+
+/* CEO & Review Sections */
+.ceo, .review {
+  padding: 60px 20px;
   text-align: center;
-  background: #eee;
 }
 
-.ceo img {
+.ceo img, .review img {
   max-width: 300px;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 12px;
+  margin-top: 20px;
 }
 
-/* Review Section */
-.review {
-  padding: 40px 20px;
-  text-align: center;
-  background-color: #fff;
+/* Scroll to Top */
+.scroll-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: none;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1000;
 }
 
-.review img {
-  max-width: 90%;
-  height: auto;
-  border-radius: 10px;
+.scroll-top:hover {
+  background-color: #ffa500;
 }
 
 /* Footer */
@@ -111,6 +205,28 @@ footer {
 }
 
 footer a {
-  color: #ffa;
+  color: #ffa500;
   text-decoration: none;
+  margin: 0 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar .nav-links {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #000;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  .navbar .nav-links.active {
+    display: flex;
+  }
+  .hamburger {
+    display: block;
+  }
 }
