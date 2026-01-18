@@ -1,622 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Diz&Dat – Premium Fashion & Accessories</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diz&Dat - Premium Fashion</title>
+  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#7e22ce',
-            secondary: '#ec4899',
-            accent: '#f59e0b',
-            dark: '#1f2937',
-            light: '#f9fafb'
-          },
-          fontFamily: {
-            sans: ['Poppins', 'sans-serif'],
-            serif: ['Playfair Display', 'serif'],
-          },
-          animation: {
-            'float': 'float 6s ease-in-out infinite',
-            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-20px)' },
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap');
-    
-    .product-card:hover .product-actions {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .parallax {
-      background-attachment: fixed;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-    
-    .scroll-down {
-      animation: bounce 2s infinite;
-    }
-    
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-      40% {transform: translateY(-20px);}
-      60% {transform: translateY(-10px);}
-    }
-    
-    .testimonial-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-    
-    .newsletter-input:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.3);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="font-sans bg-light text-dark">
-  <!-- Navigation -->
-  <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-20 items-center">
-        <div class="flex-shrink-0 flex items-center">
-          <span class="text-2xl font-serif font-bold text-primary">Diz&Dat</span>
-        </div>
-        <div class="hidden md:block">
-          <div class="ml-10 flex items-center space-x-8">
-            <a href="#" class="text-dark hover:text-primary font-medium transition">Home</a>
-            <a href="#products" class="text-dark hover:text-primary font-medium transition">Products</a>
-            <a href="#about" class="text-dark hover:text-primary font-medium transition">About</a>
-            <a href="#testimonials" class="text-dark hover:text-primary font-medium transition">Reviews</a>
-            <a href="#contact" class="text-dark hover:text-primary font-medium transition">Contact</a>
-          </div>
-        </div>
-        <div class="flex items-center space-x-4">
-          <a href="https://www.instagram.com/diz_and_dat_by_abdul?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="p-2 text-dark hover:text-primary transition">
-            <i class="fab fa-instagram text-xl"></i>
-          </a>
-          <a href="https://wa.me/2347066867217" target="_blank" class="p-2 text-dark hover:text-green-600 transition">
-            <i class="fab fa-whatsapp text-xl"></i>
-          </a>
-          <button class="md:hidden text-dark">
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
+<body>
 
-  <!-- Hero Section -->
-  <section class="relative h-screen flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-primary/90 to-secondary/90 z-0"></div>
-    <div class="absolute inset-0 opacity-20 z-0">
-      <div class="absolute inset-0 bg-[url('https://i.postimg.cc/XqwhLjPz/Screenshot-30.png')] bg-cover bg-center"></div>
-    </div>
-    
-    <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
-      <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mb-6 animate-fade-in">Elevate Your Style</h1>
-      <p class="text-xl md:text-2xl text-white/90 mb-8">Discover premium Jallabiyas, exquisite perfumes, stylish caps & comfortable shoes</p>
-      <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="https://www.instagram.com/diz_and_dat_by_abdul?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
-   class="inline-flex items-center justify-center bg-white text-primary font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-primary hover:text-white transition-all duration-300 transform hover:scale-105" 
-   target="_blank">
-  <span>Shop Now</span>
-</a>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">Diz&Dat</div>
+      <ul class="nav-links">
+        <li><a href="#products">Products</a></li>
+        <li><a href="#ceo">About</a></li>
+        <li><a href="#review">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="hamburger"><i class="fa fa-bars"></i></div>
+    </nav>
 
-          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-          </svg>
-        </a>
-        <a href="https://wa.me/2347066867217" target="_blank" class="inline-flex items-center justify-center bg-green-500 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 transform hover:scale-105">
-          <i class="fab fa-whatsapp mr-2"></i> Chat Now
-        </a>
-      </div>
+    <div class="header-content">
+      <h1>Elevate Your Style</h1>
+      <p>Premium Fashion & Accessories</p>
+      <a href="#products" class="shop-button"><i class="fa fa-shopping-cart"></i> Shop Now</a>
+      <a href="#contact" class="chat-button"><i class="fa fa-comment"></i> Chat Now</a>
     </div>
-    
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 scroll-down">
-      <a href="#products" class="text-white hover:text-accent transition">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-        </svg>
-      </a>
-    </div>
-  </section>
 
-  <!-- Featured Categories -->
-  <section class="py-16 bg-white" id="products">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="text-center mb-16">
-        <span class="text-sm font-medium text-primary uppercase tracking-wider">Our Collections</span>
-        <h2 class="mt-2 text-4xl font-serif font-bold text-dark">Featured Products</h2>
-        <div class="mt-4 h-1 w-20 bg-accent mx-auto"></div>
-      </div>
-      
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <!-- Jallabiyas -->
-        <div class="product-card relative group overflow-hidden rounded-xl shadow-lg bg-white transition-all duration-300 hover:shadow-xl">
-          <div class="relative overflow-hidden h-80">
-            <img src="https://i.postimg.cc/pdHvMSf8/photo-5848279847263127651-x.jpg" alt="Jallabiyas" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-            <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent"></div>
-            <div class="product-actions absolute bottom-0 left-0 right-0 p-4 opacity-0 transform translate-y-4 transition-all duration-300">
-              <div class="flex justify-between items-center">
-                <span class="text-xl font-bold text-white">₦12,000</span>
-                <button class="bg-accent text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-primary transition">
-                  Add to Cart
-                </button>
-              </div>
-            </div>
-            <span class="absolute top-4 right-4 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">BESTSELLER</span>
-          </div>
-          <div class="p-5">
-            <h3 class="text-xl font-serif font-bold text-dark mb-2">Premium Jallabiyas</h3>
-            <p class="text-gray-600">Elegant designs with premium fabrics</p>
-          </div>
-        </div>
-        
-        <!-- Perfumes -->
-        <div class="product-card relative group overflow-hidden rounded-xl shadow-lg bg-white transition-all duration-300 hover:shadow-xl">
-          <div class="relative overflow-hidden h-80">
-            <img src="https://i.postimg.cc/7hLvHGZr/Screenshot-61.png" alt="Perfumes" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-            <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent"></div>
-            <div class="product-actions absolute bottom-0 left-0 right-0 p-4 opacity-0 transform translate-y-4 transition-all duration-300">
-              <div class="flex justify-between items-center">
-                <span class="text-xl font-bold text-white">₦3,000-5,000</span>
-                <button class="bg-accent text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-primary transition">
-                  Add to Cart
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="p-5">
-            <h3 class="text-xl font-serif font-bold text-dark mb-2">Exquisite Perfumes</h3>
-            <p class="text-gray-600">Long-lasting fragrances for every occasion</p>
-          </div>
-        </div>
-        
-        <!-- Caps -->
-        <div class="product-card relative group overflow-hidden rounded-xl shadow-lg bg-white transition-all duration-300 hover:shadow-xl">
-          <div class="relative overflow-hidden h-80">
-            <img src="https://i.postimg.cc/mrN2h9BP/Screenshot-62.png" alt="Caps" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-            <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent"></div>
-            <div class="product-actions absolute bottom-0 left-0 right-0 p-4 opacity-0 transform translate-y-4 transition-all duration-300">
-              <div class="flex justify-between items-center">
-                <span class="text-xl font-bold text-white">₦4,000</span>
-                <button class="bg-accent text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-primary transition">
-                  Add to Cart
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="p-5">
-            <h3 class="text-xl font-serif font-bold text-dark mb-2">Stylish Caps</h3>
-            <p class="text-gray-600">Trendy designs for the fashion-forward</p>
-          </div>
-        </div>
-        
-        <!-- Shoes -->
-        <div class="product-card relative group overflow-hidden rounded-xl shadow-lg bg-white transition-all duration-300 hover:shadow-xl">
-          <div class="relative overflow-hidden h-80">
-            <img src="https://i.postimg.cc/rsx6HCDg/photo-5848279847263127652-y.jpg" alt="Shoes" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-            <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent"></div>
-            <div class="product-actions absolute bottom-0 left-0 right-0 p-4 opacity-0 transform translate-y-4 transition-all duration-300">
-              <div class="flex justify-between items-center">
-                <span class="text-xl font-bold text-white">₦9,000</span>
-                <button class="bg-accent text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-primary transition">
-                  Add to Cart
-                </button>
-              </div>
-            </div>
-            <span class="absolute top-4 right-4 bg-secondary text-white text-xs font-bold px-3 py-1 rounded-full">NEW</span>
-          </div>
-          <div class="p-5">
-            <h3 class="text-xl font-serif font-bold text-dark mb-2">Comfortable Shoes</h3>
-            <p class="text-gray-600">Perfect blend of style and comfort</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="mt-12 text-center">
-        <a href="https://www.instagram.com/diz_and_dat_by_abdul?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="inline-flex items-center justify-center bg-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-secondary transition-all duration-300 transform hover:scale-105">
-          <i class="fab fa-instagram mr-2"></i> View All Products
-        </a>
-      </div>
+    <div class="scroll-down">
+      <a href="#products"><i class="fa fa-chevron-down"></i></a>
     </div>
-  </section>
+    <img src="your-hero-image.jpg" alt="Header Background" class="header-bg">
+  </header>
 
-  <!-- Banner Section -->
-  <section class="py-20 bg-gradient-to-r from-primary to-secondary">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="text-3xl md:text-5xl font-serif font-bold text-white mb-6">Summer Collection 2025</h2>
-        <p class="text-xl text-white/90 mb-8">Discover our new arrivals with exclusive designs and premium quality</p>
-        <a href="https://wa.me/2347066867217" target="_blank" class="inline-flex items-center justify-center bg-white text-primary font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent hover:text-white transition-all duration-300 transform hover:scale-105">
-          <i class="fas fa-shopping-bag mr-2"></i> Shop the Collection
-        </a>
+  <!-- Products Section -->
+  <section class="products" id="products">
+    <h2>Featured Products</h2>
+    <div class="product-grid">
+      <div class="product">
+        <img src="product1.jpg" alt="">
+        <p>Premium Jallabiya</p>
+        <button class="icon-btn"><i class="fa fa-heart"></i></button>
       </div>
-    </div>
-  </section>
-
-  <!-- Featured Collections -->
-  <section class="py-20 bg-white" id="collections">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="text-center mb-16">
-        <span class="text-sm font-medium text-primary uppercase tracking-wider">Collections</span>
-        <h2 class="mt-2 text-4xl font-serif font-bold text-dark">Our Signature Styles</h2>
-        <div class="mt-4 h-1 w-20 bg-accent mx-auto"></div>
+      <div class="product">
+        <img src="product2.jpg" alt="">
+        <p>Stylish Perfume</p>
+        <button class="icon-btn"><i class="fa fa-heart"></i></button>
       </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Collection 1 -->
-        <div class="relative group overflow-hidden rounded-xl shadow-lg h-96">
-          <img src="https://i.postimg.cc/kXrg5NRy/Screenshot-66.png" alt="Quality Caps" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-          <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent"></div>
-          <div class="absolute bottom-0 left-0 right-0 p-6 text-center">
-            <h3 class="text-2xl font-serif font-bold text-white mb-2">Quality Caps</h3>
-            <a href="#" class="inline-block text-white border-b border-white/50 hover:border-white transition">View Collection</a>
-          </div>
-        </div>
-        
-        <!-- Collection 2 -->
-        <div class="relative group overflow-hidden rounded-xl shadow-lg h-96">
-          <img src="https://i.postimg.cc/ZnPtndXf/Screenshot-67.png" alt="Diz&Dat Caps" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-          <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent"></div>
-          <div class="absolute bottom-0 left-0 right-0 p-6 text-center">
-            <h3 class="text-2xl font-serif font-bold text-white mb-2">Diz&Dat Caps</h3>
-            <a href="#" class="inline-block text-white border-b border-white/50 hover:border-white transition">View Collection</a>
-          </div>
-        </div>
-        
-        <!-- Collection 3 -->
-        <div class="relative group overflow-hidden rounded-xl shadow-lg h-96">
-          <img src="https://i.postimg.cc/c4mGNfRC/Screenshot-64.png" alt="Diz&Dat Special" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-          <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent"></div>
-          <div class="absolute bottom-0 left-0 right-0 p-6 text-center">
-            <h3 class="text-2xl font-serif font-bold text-white mb-2">Diz&Dat Special</h3>
-            <a href="#" class="inline-block text-white border-b border-white/50 hover:border-white transition">View Collection</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section class="py-20 bg-gray-50" id="about">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="flex flex-col lg:flex-row items-center gap-12">
-        <div class="lg:w-1/2">
-          <img src="https://i.postimg.cc/VsMs6ZqG/Screenshot-68.png" alt="About Diz&Dat" class="rounded-xl shadow-lg w-full">
-        </div>
-        <div class="lg:w-1/2">
-          <span class="text-sm font-medium text-primary uppercase tracking-wider">Our Story</span>
-          <h2 class="mt-2 text-4xl font-serif font-bold text-dark mb-6">About Diz&Dat</h2>
-          <div class="mt-4 h-1 w-20 bg-accent"></div>
-          <p class="mt-6 text-gray-600 leading-relaxed">
-            Founded with a passion for style and quality, Diz&Dat brings you carefully curated fashion items that blend traditional elegance with contemporary trends. Our collections are designed to help you express your unique personality through fashion.
-          </p>
-          <p class="mt-4 text-gray-600 leading-relaxed">
-            We source only the finest materials and work with skilled artisans to create products that stand the test of time while keeping up with the latest fashion movements.
-          </p>
-          <div class="mt-8 grid grid-cols-2 gap-4">
-            <div class="flex items-center">
-              <div class="bg-primary/10 p-3 rounded-full mr-4">
-                <i class="fas fa-check-circle text-primary text-xl"></i>
-              </div>
-              <span class="font-medium">Premium Quality</span>
-            </div>
-            <div class="flex items-center">
-              <div class="bg-primary/10 p-3 rounded-full mr-4">
-                <i class="fas fa-truck text-primary text-xl"></i>
-              </div>
-              <span class="font-medium">Fast Delivery</span>
-            </div>
-            <div class="flex items-center">
-              <div class="bg-primary/10 p-3 rounded-full mr-4">
-                <i class="fas fa-headset text-primary text-xl"></i>
-              </div>
-              <span class="font-medium">24/7 Support</span>
-            </div>
-            <div class="flex items-center">
-              <div class="bg-primary/10 p-3 rounded-full mr-4">
-                <i class="fas fa-undo text-primary text-xl"></i>
-              </div>
-              <span class="font-medium">Easy Returns</span>
-            </div>
-          </div>
-        </div>
+      <div class="product">
+        <img src="product3.jpg" alt="">
+        <p>Fashionable Cap</p>
+        <button class="icon-btn"><i class="fa fa-heart"></i></button>
       </div>
     </div>
   </section>
 
   <!-- CEO Section -->
-  <section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <span class="text-sm font-medium text-primary uppercase tracking-wider">Leadership</span>
-      <h2 class="mt-2 text-4xl font-serif font-bold text-dark mb-12">Meet Our Founder</h2>
-      <div class="mt-4 h-1 w-20 bg-accent mx-auto"></div>
-      
-      <div class="max-w-4xl mx-auto mt-16">
-        <div class="flex flex-col md:flex-row items-center gap-12">
-          <div class="md:w-1/3">
-            <div class="relative w-64 h-64 mx-auto rounded-full overflow-hidden shadow-xl border-4 border-white">
-              <img src="https://i.postimg.cc/c4t6sVn5/Screenshot-59.png" alt="CEO of Diz&Dat" class="w-full h-full object-cover">
-              <div class="absolute inset-0 bg-gradient-to-t from-dark/30 to-transparent"></div>
-            </div>
-          </div>
-          <div class="md:w-2/3 text-left">
-            <h3 class="text-2xl font-serif font-bold text-dark">Abduooll</h3>
-            <p class="text-gray-600 mt-2">Founder & Creative Director</p>
-            <p class="mt-6 text-gray-600 leading-relaxed">
-              "At Diz&Dat, we believe fashion is more than just clothing—it's a form of self-expression. Our mission is to provide our customers with unique, high-quality pieces that help them showcase their individuality."
-            </p>
-            <div class="mt-8 flex justify-center md:justify-start space-x-4">
-              <a href="https://www.instagram.com/diz_and_dat_by_abduooll" target="_blank" class="bg-primary/10 text-primary p-3 rounded-full hover:bg-primary hover:text-white transition">
-                <i class="fab fa-instagram text-xl"></i>
-              </a>
-              <a href="https://wa.me/2347066867217" target="_blank" class="bg-primary/10 text-primary p-3 rounded-full hover:bg-green-500 hover:text-white transition">
-                <i class="fab fa-whatsapp text-xl"></i>
-              </a>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <section class="ceo" id="ceo">
+    <h2>About Diz&Dat</h2>
+    <img src="ceo.jpg" alt="CEO">
+    <p>Our mission is to elevate your style with premium products.</p>
   </section>
 
-  <!-- Testimonials -->
-  <section class="py-20 bg-gray-50" id="testimonials">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="text-center mb-16">
-        <span class="text-sm font-medium text-primary uppercase tracking-wider">Testimonials</span>
-        <h2 class="mt-2 text-4xl font-serif font-bold text-dark">What Our Customers Say</h2>
-        <div class="mt-4 h-1 w-20 bg-accent mx-auto"></div>
-      </div>
-      
-        <div class="testimonial-card bg-white p-8 rounded-xl shadow-lg transition-all duration-300">
-          <div class="flex items-center mb-6">
-            <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
-              <img src="https://i.postimg.cc/Y0McJLQH/Screenshot-60.png" alt="Customer Review" class="w-full h-full object-cover">
-            </div>
-            <div>
-              <h4 class="font-bold">Verified Customer</h4>
-              <div class="flex text-yellow-400 mt-1">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-            </div>
-          </div>
-          <p class="text-gray-600 italic">
-            "Absolutely love the quality and design of the Jallabiyas. The customer service is exceptional and delivery was faster than expected. Highly recommend!"
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Newsletter -->
-  <section class="py-16 bg-gradient-to-r from-primary to-secondary">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-      <h2 class="text-3xl font-serif font-bold text-white mb-4">Stay Updated</h2>
-      <p class="text-white/90 mb-8">Subscribe to our newsletter for exclusive offers, new arrivals, and style tips</p>
-      
-      <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-        <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-full focus:outline-none newsletter-input">
-        <button type="submit" class="bg-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-dark transition">
-          Subscribe
-        </button>
-      </form>
-    </div>
+  <!-- Review Section -->
+  <section class="review" id="review">
+    <h2>Customer Reviews</h2>
+    <img src="review1.jpg" alt="Review">
   </section>
 
   <!-- Contact Section -->
-  <section class="py-20 bg-white" id="contact">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="text-center mb-16">
-        <span class="text-sm font-medium text-primary uppercase tracking-wider">Contact Us</span>
-        <h2 class="mt-2 text-4xl font-serif font-bold text-dark">Get In Touch</h2>
-        <div class="mt-4 h-1 w-20 bg-accent mx-auto"></div>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div>
-          <h3 class="text-2xl font-serif font-bold text-dark mb-6">Contact Information</h3>
-          
-          <div class="space-y-6">
-            <div class="flex items-start">
-              <div class="bg-primary/10 p-3 rounded-full mr-4">
-                <i class="fas fa-map-marker-alt text-primary"></i>
-              </div>
-              <div>
-                <h4 class="font-bold">Address</h4>
-                <p class="text-gray-600">NO 8 Homan Road Old GRA Maiduguri, Nigeria</p>
-              </div>
-            </div>
-            
-            <div class="flex items-start">
-              <div class="bg-primary/10 p-3 rounded-full mr-4">
-                <i class="fas fa-phone-alt text-primary"></i>
-              </div>
-              <div>
-                <h4 class="font-bold">Phone</h4>
-                <p class="text-gray-600">+234 706 686 7217</p>
-              </div>
-            </div>
-            
-            <div class="flex items-start">
-              <div class="bg-primary/10 p-3 rounded-full mr-4">
-                <i class="fas fa-envelope text-primary"></i>
-              </div>
-              <div>
-                <h4 class="font-bold">Email</h4>
-                <p class="text-gray-600">abdulyahmad047@gmail.com</p>
-              </div>
-            </div>
-          </div>
-          
-          <div class="mt-8">
-            <h4 class="font-bold mb-4">Follow Us</h4>
-            <div class="flex space-x-4">
-              <a href="https://www.instagram.com/diz_and_dat_by_abdul" target="_blank" class="bg-primary/10 text-primary p-3 rounded-full hover:bg-primary hover:text-white transition">
-                <i class="fab fa-instagram"></i>
-              </a>
-              <a href="https://wa.me/2347066867217" target="_blank" class="bg-primary/10 text-primary p-3 rounded-full hover:bg-green-500 hover:text-white transition">
-                <i class="fab fa-whatsapp"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        
+  <section class="contact" id="contact">
+    <h2>Contact Us</h2>
+    <p>Email: info@dizdat.com | Phone: +123456789</p>
+  </section>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-top"><i class="fa fa-chevron-up"></i></button>
 
   <!-- Footer -->
-  <footer class="bg-dark text-white py-12">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <h3 class="text-xl font-serif font-bold mb-4">Diz&Dat</h3>
-          <p class="text-gray-400">
-            Premium fashion and accessories blending traditional elegance with contemporary style.
-          </p>
-        </div>
-        
-        <div>
-          <h4 class="font-bold mb-4">Quick Links</h4>
-          <ul class="space-y-2">
-            <li><a href="#" class="text-gray-400 hover:text-white transition">Home</a></li>
-            <li><a href="#products" class="text-gray-400 hover:text-white transition">Products</a></li>
-            <li><a href="#about" class="text-gray-400 hover:text-white transition">About Us</a></li>
-            <li><a href="#testimonials" class="text-gray-400 hover:text-white transition">Testimonials</a></li>
-            <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h4 class="font-bold mb-4">Products</h4>
-          <ul class="space-y-2">
-            <li><a href="#" class="text-gray-400 hover:text-white transition">Jallabiyas</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition">Perfumes</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition">Caps</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition">Shoes</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition">New Arrivals</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h4 class="font-bold mb-4">Contact</h4>
-          <ul class="space-y-2">
-            <li class="flex items-center">
-              <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
-              <span class="text-gray-400">NO 8 Homan Road Old GRA Maiduguri, Nigeria</span>
-            </li>
-            <li class="flex items-center">
-              <i class="fas fa-phone-alt text-gray-400 mr-2"></i>
-              <span class="text-gray-400">+234 706 686 7217</span>
-            </li>
-            <li class="flex items-center">
-              <i class="fas fa-envelope text-gray-400 mr-2"></i>
-              <span class="text-gray-400">abdulyahmad047@gmail.com</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">
-          &copy; 2026 Diz&Dat. All rights reserved.
-        </p>
-        <div class="flex space-x-6">
-          <a href="https://www.instagram.com/diz_and_dat_by_abdul" target="_blank" class="text-gray-400 hover:text-white transition">
-            <i class="fab fa-instagram"></i>
-          </a>
-          
-          <a href="https://wa.me/2347066867217" target="_blank" class="text-gray-400 hover:text-white transition">
-            <i class="fab fa-whatsapp"></i>
-          </a>
-        </div>
-      </div>
-    </div>
+  <footer>
+    <p>&copy; 2026 Diz&Dat. All Rights Reserved.</p>
+    <p>Follow us: 
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-whatsapp"></i></a>
+    </p>
   </footer>
 
-  <!-- Back to Top Button -->
-  <button id="backToTop" class="fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-secondary">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-    </svg>
-  </button>
-
-  <script>
-    // Back to Top Button
-    const backToTopButton = document.getElementById('backToTop');
-    
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 300) {
-        backToTopButton.classList.remove('opacity-0', 'invisible');
-        backToTopButton.classList.add('opacity-100', 'visible');
-      } else {
-        backToTopButton.classList.remove('opacity-100', 'visible');
-        backToTopButton.classList.add('opacity-0', 'invisible');
-      }
-    });
-    
-    backToTopButton.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-    
-    // Mobile Menu Toggle (would need implementation)
-    // const mobileMenuButton = document.querySelector('.mobile-menu-button');
-    // const mobileMenu = document.querySelector('.mobile-menu');
-    // mobileMenuButton.addEventListener('click', () => {
-    //   mobileMenu.classList.toggle('hidden');
-    // });
-    
-    // Product hover effects
-    const productCards = document.querySelectorAll('.product-card');
-    productCards.forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        const img = card.querySelector('img');
-        img.style.transform = 'scale(1.1)';
-      });
-      card.addEventListener('mouseleave', () => {
-        const img = card.querySelector('img');
-        img.style.transform = 'scale(1)';
-      });
-    });
-    
-    // Simple form validation for newsletter
-    const newsletterForm = document.querySelector('form');
-    if (newsletterForm) {
-      newsletterForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const emailInput = newsletterForm.querySelector('input[type="email"]');
-        if (emailInput.value.includes('@')) {
-          alert('Thank you for subscribing to our newsletter!');
-          emailInput.value = '';
-        } else {
-          alert('Please enter a valid email address.');
-        }
-      });
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
