@@ -1,976 +1,610 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0c6b50">
-  <meta name="description" content="KudiFlow business tracker">
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="icon" href="./icons/icon-192.png">
-  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
-  <title>KudiFlow — Business clarity, every day</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --green: #0c6b50;
-      --green2: #14916d;
-      --ink: #14251f;
-      --muted: #70817a;
-      --line: #e5ece8;
-      --bg: #f6faf8;
-      --card: #fff;
-      --red: #c83b3b;
-      --amber: #a96800
-    }
-    * {
-      box-sizing: border-box
-    }
-    body {
-      margin: 0;
-      font-family: DM Sans, sans-serif;
-      color: var(--ink);
-      background: var(--bg)
-    }
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit
-    }
-    button {
-      cursor: pointer
-    }
-    .eyebrow {
-      margin: 0 0 8px;
-      color: var(--green2);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .13em
-    }
-    .auth {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr
-    }
-    .brand-panel {
-      padding: clamp(40px, 8vw, 110px);
-      color: #fff;
-      background: linear-gradient(145deg, #063f31, #0e795a)
-    }
-    .brand-panel img {
-      width: 55px;
-      height: 55px;
-      object-fit: contain;
-      border-radius: 14px;
-      background: #fff
-    }
-    .brand-panel .eyebrow {
-      margin-top: 95px;
-      color: #9de2c9
-    }
-    .brand-panel h1 {
-      max-width: 520px;
-      margin: 0;
-      font: 800 clamp(44px, 6vw, 72px)/1.04 'Plus Jakarta Sans';
-      letter-spacing: -3px
-    }
-    .brand-panel>p:last-child {
-      max-width: 460px;
-      color: #d1eee3;
-      font-size: 18px;
-      line-height: 1.7
-    }
-    .auth-card {
-      width: min(480px, calc(100% - 44px));
-      align-self: center;
-      justify-self: center;
-      padding: 30px
-    }
-    .auth-card h2 {
-      margin: 0 0 26px;
-      font: 800 30px 'Plus Jakarta Sans';
-      letter-spacing: -1.4px
-    }
-    .auth-card form {
-      display: grid;
-      gap: 15px
-    }
-    .auth-card label,
-    .form label {
-      display: grid;
-      gap: 7px;
-      color: #42564e;
-      font-size: 13px;
-      font-weight: 700
-    }
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d7e3dd;
-      border-radius: 9px;
-      color: var(--ink);
-      background: #fff;
-      outline: 0
-    }
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--green2);
-      box-shadow: 0 0 0 3px #dff4ec
-    }
-    .primary {
-      border: 0;
-      border-radius: 10px;
-      padding: 13px 16px;
-      color: #fff;
-      background: var(--green);
-      font-weight: 800;
-      box-shadow: 0 8px 18px #0c6b5024
-    }
-    .primary:hover {
-      background: #09533f
-    }
-    .link {
-      padding: 0;
-      border: 0;
-      color: var(--green);
-      background: transparent;
-      font-weight: 800
-    }
-    .auth-card>div>p:last-child {
-      color: var(--muted);
-      font-size: 14px
-    }
-    .mobile-logo {
-      display: none
-    }
-    #toast {
-      position: fixed;
-      z-index: 100;
-      top: 20px;
-      right: 20px;
-      max-width: 350px;
-      padding: 13px 16px;
-      color: #fff;
-      background: #14251f;
-      border-radius: 9px;
-      opacity: 0;
-      transform: translateY(-8px);
-      transition: .25s;
-      pointer-events: none
-    }
-    #toast.show {
-      opacity: 1;
-      transform: none
-    }
-    #app {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 245px 1fr
-    }
-    aside {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding: 23px 14px;
-      border-right: 1px solid var(--line);
-      background: #fff
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 4px 9px 28px;
-      font: 800 20px 'Plus Jakarta Sans';
-      letter-spacing: -1px
-    }
-    .brand img {
-      width: 34px;
-      height: 34px;
-      object-fit: contain;
-      border-radius: 9px
-    }
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      padding: 11px 12px;
-      margin: 2px 0;
-      border: 0;
-      border-radius: 9px;
-      color: #60726a;
-      background: transparent;
-      text-align: left;
-      font-weight: 700
-    }
-    .nav.active,
-    .nav:hover {
-      color: var(--green);
-      background: #eaf8f2
-    }
-    .side-bottom {
-      margin-top: auto
-    }
-    .workspace {
-      min-width: 0
-    }
-    .app-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 25px clamp(20px, 4vw, 48px);
-      background: #fff;
-      border-bottom: 1px solid var(--line)
-    }
-    .app-header h1 {
-      margin: 0;
-      font: 800 27px 'Plus Jakarta Sans';
-      letter-spacing: -1.3px
-    }
-    .user {
-      display: flex;
-      align-items: center;
-      gap: 9px
-    }
-    .user span {
-      display: grid;
-      place-items: center;
-      width: 35px;
-      height: 35px;
-      color: #fff;
-      background: var(--green);
-      border-radius: 50%;
-      font-weight: 800
-    }
-    .user b {
-      font-size: 14px
-    }
-    #mobileMenu {
-      display: none
-    }
-    .page {
-      padding: 30px clamp(20px, 4vw, 48px)
-    }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 15px
-    }
-    .stat,
-    .panel {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--card);
-      box-shadow: 0 4px 14px #113c2c08
-    }
-    .stat {
-      padding: 18px
-    }
-    .stat p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700
-    }
-    .stat h3 {
-      margin: 11px 0 3px;
-      font: 800 23px 'Plus Jakarta Sans';
-      letter-spacing: -1px
-    }
-    .stat small {
-      color: #198060;
-      font-weight: 700
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1.3fr .7fr;
-      gap: 18px;
-      margin-top: 20px
-    }
-    .panel {
-      padding: 21px
-    }
-    .panel h2 {
-      margin: 0 0 17px;
-      font: 800 18px 'Plus Jakarta Sans';
-      letter-spacing: -.6px
-    }
-    .row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--line)
-    }
-    .row:last-child {
-      border: 0
-    }
-    .row b {
-      font-size: 14px
-    }
-    .row p {
-      margin: 3px 0 0;
-      color: var(--muted);
-      font-size: 12px
-    }
-    .badge {
-      padding: 5px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800
-    }
-    .paid {
-      color: #087452;
-      background: #e4f8ef
-    }
-    .owing {
-      color: #9a5a00;
-      background: #fff1d8
-    }
-    .pending {
-      color: #a13e00;
-      background: #fff0e8
-    }
-    .toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 20px
-    }
-    .toolbar h2 {
-      margin: 0;
-      font: 800 23px 'Plus Jakarta Sans';
-      letter-spacing: -1px
-    }
-    .search {
-      max-width: 290px
-    }
-    .table {
-      width: 100%;
-      border-collapse: collapse
-    }
-    .table th,
-    .table td {
-      padding: 14px 11px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      font-size: 13px
-    }
-    .table th {
-      color: var(--muted);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: .07em
-    }
-    .empty {
-      padding: 48px 20px;
-      text-align: center;
-      color: var(--muted)
-    }
-    .modal {
-      position: fixed;
-      z-index: 20;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      padding: 20px;
-      background: #10241c80
-    }
-    .modal-card {
-      position: relative;
-      width: min(620px, 100%);
-      max-height: 90vh;
-      overflow: auto;
-      padding: 28px;
-      border-radius: 15px;
-      background: #fff
-    }
-    .x {
-      position: absolute;
-      right: 14px;
-      top: 11px;
-      border: 0;
-      color: #566;
-      background: transparent;
-      font-size: 28px
-    }
-    .modal-card h2 {
-      margin: 0 0 20px;
-      font: 800 23px 'Plus Jakarta Sans'
-    }
-    .form {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px
-    }
-    .form .wide {
-      grid-column: 1/-1
-    }
-    .form-actions {
-      display: flex;
-      justify-content: end;
-      gap: 10px;
-      grid-column: 1/-1;
-      margin-top: 8px
-    }
-    .secondary {
-      padding: 11px 14px;
-      border: 1px solid #d5e1dc;
-      border-radius: 9px;
-      color: #42564e;
-      background: #fff;
-      font-weight: 800
-    }
-    .danger {
-      color: var(--red)
-    }
-    .action {
-      border: 0;
-      color: var(--green);
-      background: none;
-      font-weight: 800
-    }
-    .bottom-nav {
-      display: none
-    }
-    @media(max-width:1000px) {
-      .stats {
-        grid-template-columns: repeat(3, 1fr)
-      }
-      .grid {
-        grid-template-columns: 1fr
-      }
-    }
-    @media(max-width:700px) {
-      .auth {
-        display: block
-      }
-      .brand-panel {
-        display: none
-      }
-      .auth-card {
-        min-height: 100vh;
-        display: grid;
-        align-content: center
-      }
-      .mobile-logo {
-        display: block;
-        width: 58px;
-        height: 58px;
-        margin-bottom: 25px;
-        object-fit: contain
-      }
-      #app {
-        display: block
-      }
-      aside {
-        display: none
-      }
-      .app-header {
-        padding: 18px 16px
-      }
-      .app-header h1 {
-        font-size: 22px
-      }
-      .user b {
-        display: none
-      }
-      #mobileMenu {
-        display: block;
-        border: 0;
-        color: var(--green);
-        background: transparent;
-        font-size: 22px
-      }
-      .page {
-        padding: 20px 16px 86px
-      }
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px
-      }
-      .stat {
-        padding: 14px
-      }
-      .stat h3 {
-        font-size: 19px
-      }
-      .table-wrap {
-        overflow: auto
-      }
-      .toolbar {
-        align-items: start;
-        flex-direction: column
-      }
-      .toolbar .search {
-        max-width: none
-      }
-      .form {
-        grid-template-columns: 1fr
-      }
-      .bottom-nav {
-        position: fixed;
-        z-index: 9;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        display: flex;
-        justify-content: space-around;
-        padding: 7px;
-        background: #fff;
-        border-top: 1px solid var(--line)
-      }
-      .bottom-nav .nav {
-        width: auto;
-        display: grid;
-        place-items: center;
-        gap: 2px;
-        padding: 5px;
-        font-size: 17px
-      }
-      .bottom-nav .nav span {
-        font-size: 9px
-      }
-      .modal-card {
-        padding: 23px 17px
-      }
-      .grid {
-        margin-top: 12px
-      }
-    }
-  </style>
-  <style>
-    .modal[hidden] {
-      display: none !important
-    }
-  </style>
-  <style>
-    [hidden] {
-      display: none !important
-    }
-    .splash {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #f6faf8;
-      color: #0c6b50;
-      font: 800 18px "Plus Jakarta Sans", sans-serif
-    }
-    .splash img {
-      width: 64px;
-      height: 64px;
-      object-fit: contain;
-      border-radius: 16px;
-      display: block;
-      margin: 0 auto 14px
-    }
-  </style>
-  <style>
-    @media (max-width:700px) {
-      aside.mobile-open {
-        display: flex !important;
-        position: fixed !important;
-        z-index: 80 !important;
-        inset: 0 auto 0 0 !important;
-        width: min(280px, 84vw) !important;
-        height: 100dvh !important;
-        box-shadow: 18px 0 40px rgba(12, 35, 27, .22) !important;
-        overflow-y: auto !important
-      }
-    }
-  </style>
-  <style id="appearance-theme">
-    html[data-theme="light"] {
-      color-scheme: light
-    }
-    html[data-theme="light"] body {
-      background: #f6faf8;
-      color: #14251f
-    }
-    html[data-theme="light"] .auth,
-    html[data-theme="light"] #app {
-      background: #f6faf8
-    }
-    html[data-theme="light"] .brand-panel {
-      background: linear-gradient(145deg, #063f31, #0e795a)
-    }
-    html[data-theme="light"] .workspace {
-      background: #f6faf8
-    }
-    html[data-theme="light"] aside,
-    html[data-theme="light"] .app-header,
-    html[data-theme="light"] .bottom-nav {
-      background: #fff;
-      border-color: #e5ece8
-    }
-    html[data-theme="light"] aside {
-      color: #14251f
-    }
-    html[data-theme="light"] .brand,
-    html[data-theme="light"] .app-header h1,
-    html[data-theme="light"] .panel,
-    html[data-theme="light"] .stat {
-      color: #14251f
-    }
-    html[data-theme="light"] .panel,
-    html[data-theme="light"] .stat {
-      background: #fff;
-      border-color: #e5ece8;
-      box-shadow: 0 4px 14px #113c2c08
-    }
-    html[data-theme="light"] input,
-    html[data-theme="light"] select,
-    html[data-theme="light"] textarea {
-      background: #fff;
-      color: #14251f;
-      border-color: #d7e3dd
-    }
-    html[data-theme="light"] .nav {
-      color: #60726a
-    }
-    html[data-theme="light"] .nav.active,
-    html[data-theme="light"] .nav:hover {
-      color: #0c6b50;
-      background: #eaf8f2
-    }
-    html[data-theme="light"] .modal-card {
-      background: #fff;
-      color: #14251f;
-      border-color: #e5ece8
-    }
-    html[data-theme="light"] .row,
-    html[data-theme="light"] .table th,
-    html[data-theme="light"] .table td {
-      border-color: #e5ece8
-    }
-  </style>
-  <style id="native-pin-and-overview">
-    .overview-summaries {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 16px
-    }
-    .overview-summary {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 16px 18px
-    }
-    .overview-summary h2 {
-      margin: 0 0 4px;
-      font-size: 16px
-    }
-    .overview-summary p,
-    .sheet-head p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px
-    }
-    .sheet-head {
-      padding: 3px 0 14px
-    }
-    .sheet-list {
-      max-height: min(58vh, 480px);
-      overflow: auto;
-      border: 1px solid var(--line);
-      border-radius: 14px
-    }
-    .sheet-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 15px;
-      border-bottom: 1px solid var(--line)
-    }
-    .sheet-row:last-child {
-      border-bottom: 0
-    }
-    .sheet-row p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 13px
-    }
-    .sheet-amount {
-      text-align: right
-    }
-    .sheet-amount .badge,
-    .sheet-amount span {
-      display: inline-block;
-      margin-top: 5px
-    }
-    .debt-amount b,
-    .debt-amount span {
-      color: #fb6d7b
-    }
-    .sheet-actions {
-      margin-top: 11px
-    }
-    .sheet-close {
-      width: 100%;
-      margin-top: 14px
-    }
-    .native-pin {
-      text-align: center;
-      max-width: 360px;
-      margin: auto;
-      padding: 8px 0 4px
-    }
-    .native-pin>img {
-      width: 55px;
-      height: 55px;
-      object-fit: contain;
-      border-radius: 16px;
-      margin-bottom: 12px
-    }
-    .native-pin h2 {
-      margin-bottom: 7px
-    }
-    .native-pin>p:not(.eyebrow) {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px
-    }
-    .pin-dots {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin: 28px 0
-    }
-    .pin-dots i {
-      width: 13px;
-      height: 13px;
-      border: 1.5px solid #8da89b;
-      border-radius: 50%;
-      transition: transform .15s, background .15s
-    }
-    .pin-dots i.filled {
-      background: #28d79b;
-      border-color: #28d79b;
-      transform: scale(1.08)
-    }
-    .pin-keypad {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 11px;
-      max-width: 272px;
-      margin: 0 auto 20px
-    }
-    .pin-keypad button {
-      height: 55px;
-      border: 1px solid #29443a;
-      border-radius: 50%;
-      color: #f3fff9;
-      background: #13231d;
-      font-size: 21px;
-      box-shadow: none
-    }
-    .pin-keypad button:active {
-      transform: scale(.95);
-      background: #1d3e31
-    }
-    .native-pin .link {
-      font-size: 14px
-    }
-    .pin-reset {
-      max-width: 390px
-    }
-    .pin-reset>p:not(.eyebrow) {
-      color: var(--muted);
-      line-height: 1.5
-    }
-    .pin-reset .form {
-      grid-template-columns: 1fr
-    }
-    .pin-reset .primary {
-      width: 100%
-    }
-    @media(max-width:700px) {
-      .overview-summaries {
-        grid-template-columns: 1fr;
-        gap: 10px
-      }
-      .overview-summary {
-        padding: 14px 15px
-      }
-      .sheet-list {
-        max-height: 52vh
-      }
-      .sheet-row {
-        padding: 13px
-      }
-      .modal-card {
-        max-height: 88dvh
-      }
-      .native-pin {
-        padding-top: 2px
-      }
-      .pin-keypad button {
-        height: 52px
-      }
-      .stats .stat {
-        min-height: 82px
-      }
-      .stats .stat h3 {
-        margin-top: 7px
-      }
-    }
-    html[data-theme="light"] .workspace {
-      background: #eef3f0
-    }
-    html[data-theme="light"] .panel,
-    html[data-theme="light"] .stat,
-    html[data-theme="light"] .modal-card,
-    html[data-theme="light"] aside,
-    html[data-theme="light"] .app-header,
-    html[data-theme="light"] .bottom-nav {
-      background: #f9fbfa !important;
-      color: #183128 !important;
-      border-color: #d6e0db !important
-    }
-    html[data-theme="light"] .panel h2,
-    html[data-theme="light"] .stat h3,
-    html[data-theme="light"] .app-header h1,
-    html[data-theme="light"] .brand,
-    html[data-theme="light"] .row b,
-    html[data-theme="light"] .sheet-row b {
-      color: #173028 !important
-    }
-    html[data-theme="light"] .stat p,
-    html[data-theme="light"] .row p,
-    html[data-theme="light"] .sheet-row p,
-    html[data-theme="light"] .overview-summary p {
-      color: #60766d !important
-    }
-    html[data-theme="light"] .pin-keypad button {
-      background: #e6eeea;
-      color: #163328;
-      border-color: #ccd9d3
-    }
-  </style>
-  <style id="debt-modal-pin-lock">
-    .modal:has(.native-pin) .x {
-      display: none !important
-    }
-    .modal:has(.native-pin) {
-      background: #03110de8
-    }
-    .sheet-handle {
-      width: 42px;
-      height: 4px;
-      margin: 0 auto 16px;
-      border-radius: 999px;
-      background: #5c7369
-    }
-    .debt-cards {
-      display: grid;
-      gap: 10px;
-      max-height: min(56vh, 470px);
-      overflow: auto
-    }
-    .debt-card {
-      padding: 14px;
-      border: 1px solid #234037;
-      border-radius: 14px;
-      background: #0d1b16
-    }
-    .debt-card-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px
-    }
-    .debt-card p {
-      margin: 5px 0 0;
-      color: #9ab2a8;
-      font-size: 12px
-    }
-    .debt-card .debt-amount {
-      text-align: right
-    }
-    .debt-card .debt-amount b,
-    .debt-card .debt-amount span {
-      display: block;
-      color: #ff7480
-    }
-    .debt-card .debt-amount span {
-      margin-top: 5px;
-      font-size: 12px
-    }
-    .debt-card-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
-      margin-top: 13px
-    }
-    .debt-card-actions .primary,
-    .debt-card-actions .secondary {
-      display: grid;
-      place-items: center;
-      padding: 10px;
-      text-decoration: none
-    }
-    .call-debtor {
-      background: #17231f !important;
-      color: #effbf5 !important;
-      border-color: #2a4237 !important
-    }
-    @media(max-width:700px) {
-      .debt-cards {
-        max-height: 50vh
-      }
-      .debt-card {
-        padding: 13px
-      }
-      .debt-card-actions .primary,
-      .debt-card-actions .secondary {
-        font-size: 13px
-      }
-    }
-  </style>
-  <style id="mobile-nav-refinement">
-    @media(max-width:700px) {
-      .mobile-bottom-nav {
-        z-index: 50;
-        padding: 7px 8px calc(7px + env(safe-area-inset-bottom));
-        background: #f9fbfa !important;
-        border-color: #d6e0db !important;
-        backdrop-filter: blur(16px)
-      }
-      .mobile-bottom-nav .nav {
-        min-width: 0;
-        color: #60766d !important
-      }
-      .mobile-bottom-nav .nav.active {
-        color: #0c6b50 !important;
-        background: transparent !important;
-        text-shadow: 0 0 14px #0c6b5040
-      }
-      .mobile-bottom-nav .nav span {
-        font-size: 10px !important
-      }
-      .page {
-        padding-bottom: calc(94px + env(safe-area-inset-bottom))
-      }
-    }
-    html[dir="rtl"] {
-      direction: rtl
-    }
-    html[dir="rtl"] .nav,
-    html[dir="rtl"] .sheet-row,
-    html[dir="rtl"] .debt-card-top {
-      text-align: right
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#0c6b50">
+<meta name="description" content="KudiFlow business tracker">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="https://i.postimg.cc/XYrDGNX8/D90E30FC-437C-4185-8C32-AC9A848B5098.png">
+<link rel="apple-touch-icon" href="https://i.postimg.cc/XYrDGNX8/D90E30FC-437C-4185-8C32-AC9A848B5098.png">
+<title>KudiFlow — Business clarity, every day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:#1bd69b;--green2:#62f0be;--ink:#eef7f3;--muted:#9ab2a8;--line:#243a32;
+  --bg:#07110e;--card:#0d1b16;--red:#ff7474;--amber:#fbbf24;--blue:#6366f1;
+  --font-body:'DM Sans',system-ui,sans-serif;--font-display:'Plus Jakarta Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);line-height:1.5;min-height:100dvh;overflow-x:hidden}
+button,input,select,textarea{font:inherit;border:none;background:none;color:inherit}
+button{cursor:pointer}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:800;letter-spacing:-0.03em;line-height:1.15}
+
+/* Splash */
+#splash{position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:var(--bg);transition:opacity .4s}
+#splash img{width:72px;height:72px;border-radius:18px;object-fit:contain}
+#splash span{color:var(--muted);font-size:15px;font-weight:600}
+
+/* Toast */
+#toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:400;padding:14px 22px;background:#173128;border:1px solid #327e61;border-radius:12px;color:#fff;font-size:14px;font-weight:700;opacity:0;visibility:hidden;transition:all .3s;box-shadow:0 8px 32px rgba(0,0,0,.4);max-width:90vw;text-align:center}
+#toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+#toast.success{background:#0d3d2a;border-color:var(--green);color:var(--green)}
+
+/* Auth */
+.auth{min-height:100dvh;display:flex;background:var(--bg)}
+.brand-panel{display:none}
+.auth-card{width:100%;max-width:420px;margin:auto;padding:24px}
+.auth-card img.mobile-logo{width:64px;height:64px;border-radius:16px;margin-bottom:28px;object-fit:contain;display:block}
+.auth-card .eyebrow{margin-bottom:8px}
+.auth-card h2{font-size:28px;margin-bottom:6px}
+.auth-card>p{color:var(--muted);font-size:14px;margin-bottom:8px}
+.auth-card form{display:flex;flex-direction:column;gap:14px;margin-top:24px}
+.auth-card label,.form label{display:flex;flex-direction:column;gap:6px;color:var(--muted);font-size:13px;font-weight:700}
+input,select,textarea{width:100%;padding:14px 16px;border:1px solid #29443a;border-radius:12px;color:var(--ink);background:#0b1813;outline:0;font-size:15px}
+input:focus,select:focus,textarea:focus{border-color:#33dca1;box-shadow:0 0 0 3px rgba(51,220,161,.12)}
+input::placeholder{color:#5a7369}
+.primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;background:linear-gradient(135deg,#18c58c,#0e9268);color:#fff;font-weight:800;font-size:15px;border-radius:12px;box-shadow:0 8px 24px rgba(14,206,146,.25)}
+.primary:hover{background:#20d89c}
+.link{padding:0;color:var(--green);background:transparent;font-weight:800;font-size:14px}
+.auth-card>div>p:last-child{color:var(--muted);font-size:14px;margin-top:20px;text-align:center}
+
+/* App Layout */
+#app{min-height:100dvh;display:flex}
+aside{position:fixed;top:0;left:0;height:100dvh;width:280px;display:flex;flex-direction:column;padding:20px 16px;background:#0a1511;border-right:1px solid #29443a;z-index:200;transform:translateX(-100%);transition:transform .3s ease}
+aside.mobile-open{transform:translateX(0)}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 8px 24px;font:800 20px var(--font-display);letter-spacing:-1px;color:#f4fcf8}
+.brand img{width:36px;height:36px;object-fit:contain;border-radius:10px}
+nav{display:flex;flex-direction:column;gap:3px}
+.nav{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:10px;color:#9db4aa;background:transparent;text-align:left;font-weight:600;font-size:15px}
+.nav.active,.nav:hover{color:#82f5c6;background:#153a2d}
+.nav span{font-size:15px}
+.side-bottom{margin-top:auto;padding-top:16px;border-top:1px solid #29443a;display:flex;flex-direction:column;gap:3px}
+.side-bottom .nav{color:#9db4aa}
+#logout{color:var(--red)!important}
+
+.workspace{flex:1;min-width:0;margin-left:0}
+.app-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px;background:#091611e8;border-bottom:1px solid #20352c;backdrop-filter:blur(16px);position:sticky;top:0;z-index:50}
+.app-header h1{margin:0;font:800 22px var(--font-display);letter-spacing:-1px;color:#f7fffb}
+#mobileMenu{display:block;width:40px;height:40px;border-radius:10px;background:#13231d;color:var(--green);font-size:22px}
+.user{display:flex;align-items:center;gap:10px}
+.user span{display:grid;place-items:center;width:36px;height:36px;color:#07110e;background:linear-gradient(135deg,#21d99d,#0b7555);border-radius:50%;font-weight:800;font-size:14px;box-shadow:0 0 0 3px rgba(29,215,157,.15)}
+.user b{display:none;font-size:14px;color:#eaf8f1}
+
+/* Drawer backdrop */
+#drawerBackdrop{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .3s}
+#drawerBackdrop:not([hidden]){opacity:1;visibility:visible}
+
+/* Page */
+.page{padding:16px 16px calc(90px + env(safe-area-inset-bottom))}
+
+/* Greeting */
+.greeting{margin-bottom:20px}
+.greeting h1{font-size:24px;margin-bottom:4px;color:#f7fffb}
+.greeting p{color:var(--muted);font-size:15px}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
+.stat{position:relative;overflow:hidden;border-radius:16px;padding:18px;min-height:120px;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid transparent}
+.stat:nth-child(1){background:linear-gradient(145deg,#0d3d2a,#13231d);border-color:rgba(27,214,155,.2)}
+.stat:nth-child(2){background:linear-gradient(145deg,#1e1b4b,#13231d);border-color:rgba(99,102,241,.2)}
+.stat:nth-child(3),.stat:nth-child(4),.stat:nth-child(5){background:var(--card);border-color:#234037;text-align:center;min-height:100px;padding:16px 12px;justify-content:center}
+.stat:nth-child(1)::after,.stat:nth-child(2)::after{content:'';position:absolute;top:16px;right:16px;width:36px;height:36px;opacity:.5;font-size:28px;display:flex;align-items:center;justify-content:center}
+.stat:nth-child(1)::after{content:'↻'}
+.stat:nth-child(2)::after{content:'↗'}
+.stat:nth-child(3)::before,.stat:nth-child(4)::before,.stat:nth-child(5)::before{content:'';display:block;width:32px;height:32px;margin:0 auto 8px;font-size:24px;line-height:32px}
+.stat:nth-child(3)::before{content:'👛'}
+.stat:nth-child(4)::before{content:'📦'}
+.stat:nth-child(5)::before{content:'👥'}
+.stat p{margin:0;font-size:12px;font-weight:600;color:var(--muted)}
+.stat:nth-child(1) p,.stat:nth-child(2) p{color:#9de2c9}
+.stat h3{margin:8px 0 4px;font:800 22px var(--font-display);letter-spacing:-1px;color:#f7fffb}
+.stat:nth-child(1) h3,.stat:nth-child(2) h3{font-size:26px}
+.stat small{font-size:12px;color:var(--muted)}
+
+/* Dashboard sections */
+.dashboard-sections{display:flex;flex-direction:column;gap:12px}
+.dashboard-section{display:flex;align-items:center;gap:14px;padding:18px 16px;background:var(--card);border:1px solid #234037;border-radius:16px;cursor:pointer;transition:background .2s}
+.dashboard-section:hover{background:#13231d}
+.section-icon{width:44px;height:44px;border-radius:12px;background:#13231d;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.section-text{flex:1}
+.section-text h4{font-size:16px;margin-bottom:2px;color:#f7fffb}
+.section-text p{font-size:13px;color:var(--muted)}
+.section-arrow{color:var(--green);font-weight:700;font-size:14px;flex-shrink:0}
+
+/* Panel & Grid */
+.panel{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:20px}
+.panel h2{margin:0 0 16px;font:800 18px var(--font-display)}
+.grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
+
+/* Table */
+.table-wrap{overflow:auto}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:14px 12px;text-align:left;font-size:14px}
+.table th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:800}
+.table td{border-top:1px solid var(--line)}
+.table tr:hover td{background:rgba(255,255,255,.02)}
+.empty{padding:48px 20px;text-align:center;color:var(--muted)}
+
+/* Toolbar */
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px}
+.toolbar h2{margin:0;font:800 22px var(--font-display);letter-spacing:-1px}
+.toolbar .eyebrow{margin-bottom:4px}
+
+/* Row */
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}
+.row b{font-size:14px}
+.row p{margin:3px 0 0;color:var(--muted);font-size:12px}
+
+/* Badge */
+.badge{padding:6px 10px;border-radius:999px;font-size:11px;font-weight:800}
+.paid{color:#68f1bc;background:#123e2e}
+.owing{color:var(--red);background:#3d0d0d}
+.pending{color:var(--amber);background:#3d2a0d}
+.partially_paid{color:var(--amber);background:#3d2a0d}
+
+/* Modal */
+.modal{position:fixed;z-index:100;inset:0;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.modal:not([hidden]){opacity:1;visibility:visible}
+.modal-card{position:relative;width:100%;max-width:520px;max-height:88dvh;overflow:auto;background:#0a1511;border-radius:24px 24px 0 0;border:1px solid #315445;border-bottom:none;transform:translateY(100%);transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.modal:not([hidden]) .modal-card{transform:translateY(0)}
+.modal-card::before{content:'';display:block;width:42px;height:4px;margin:12px auto;border-radius:999px;background:#5c7369}
+.modal-card .x{position:absolute;right:16px;top:16px;width:32px;height:32px;border-radius:50%;background:#13231d;color:#b9d0c5;font-size:20px;display:flex;align-items:center;justify-content:center;z-index:2}
+.modal-card h2{padding:0 24px 16px;font:800 22px var(--font-display);color:#f4fcf8}
+
+/* Sheet list */
+.sheet-list{padding:0 24px 20px;display:flex;flex-direction:column;gap:10px;max-height:58vh;overflow:auto}
+.sheet-item{background:#0d1b16;border:1px solid #234037;border-radius:14px;padding:18px}
+.sheet-item-header{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.sheet-item-title{font-weight:700;font-size:15px;color:#f7fffb}
+.sheet-item-meta{color:var(--muted);font-size:12px;margin-top:3px}
+.sheet-item-amount{text-align:right}
+.sheet-item-amount-value{font:800 16px var(--font-display);color:#f7fffb;display:block}
+.sheet-item-amount .badge{margin-top:6px;display:inline-block}
+
+/* Debt cards */
+.debt-cards{padding:0 24px 20px;display:flex;flex-direction:column;gap:10px;max-height:56vh;overflow:auto}
+.debt-card{padding:16px;border:1px solid #234037;border-radius:14px;background:#0d1b16}
+.debt-card-top{display:flex;justify-content:space-between;gap:14px}
+.debt-card p{margin:5px 0 0;color:#9ab2a8;font-size:12px}
+.debt-card .debt-amount{text-align:right}
+.debt-card .debt-amount b,.debt-card .debt-amount span{display:block;color:var(--red)}
+.debt-card .debt-amount b{font-size:18px}
+.debt-card .debt-amount span{margin-top:4px;font-size:12px}
+.debt-card-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.debt-card-actions .primary,.debt-card-actions .secondary{display:grid;place-items:center;padding:12px;text-decoration:none;border-radius:12px;font-size:13px;font-weight:700}
+.call-debtor{background:#17231f!important;color:#effbf5!important;border:1px solid #2a4237!important}
+
+.sheet-close{width:calc(100% - 48px);margin:0 24px 20px}
+
+/* Form */
+.form{display:grid;grid-template-columns:1fr;gap:14px;padding:0 24px 24px}
+.form .wide{grid-column:1/-1}
+.form-actions{display:flex;justify-content:flex-end;gap:10px;grid-column:1/-1;margin-top:8px}
+.secondary{padding:12px 18px;border:1px solid #2a4237;border-radius:12px;color:#effbf5;background:#17231f;font-weight:700;font-size:14px}
+.action{color:var(--green);background:none;font-weight:800;font-size:14px}
+
+/* Settings */
+.settings-page{padding:16px}
+.settings-card{background:var(--card);border:1px solid #234037;border-radius:16px;overflow:hidden;margin-bottom:16px}
+.settings-card-header{padding:16px 20px;border-bottom:1px solid #234037}
+.settings-card-header h3{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.settings-card-body{padding:4px 20px}
+.settings-field{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #234037}
+.settings-field:last-child{border:0}
+.settings-field-info{display:flex;flex-direction:column;gap:2px}
+.settings-field-label{font-weight:700;font-size:15px;color:#f7fffb}
+.settings-field-value{font-size:13px;color:var(--muted)}
+.settings-field-action{color:var(--muted);font-size:20px;background:none;padding:4px}
+.settings-success{margin:12px 20px;padding:14px 18px;background:#0d3d2a;color:var(--green);border-radius:12px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:10px}
+
+/* Preferences in settings */
+.kf-preferences{padding:16px 20px}
+.kf-preferences h2{margin-bottom:12px;font:800 16px var(--font-display)}
+.kf-preferences label{margin-bottom:12px}
+.kf-preferences select{width:100%;margin-top:6px}
+.kf-preferences hr{border:0;border-top:1px solid #234037;margin:12px 0}
+
+/* Language page */
+.language-page{padding:16px}
+.back-button{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:700;font-size:15px;margin-bottom:16px;background:none;padding:0}
+.language-list{background:var(--card);border:1px solid #234037;border-radius:16px;overflow:hidden}
+.language-item{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid #234037;cursor:pointer;transition:background .15s}
+.language-item:last-child{border:0}
+.language-item:hover{background:#13231d}
+.language-item-name{font-weight:700;font-size:15px;color:#f7fffb}
+.language-item-native{font-size:13px;color:var(--muted);margin-top:2px}
+.language-item-check{width:24px;height:24px;border-radius:50%;background:var(--green);color:#07110e;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
+.language-note{padding:16px 20px;font-size:13px;color:var(--muted)}
+
+/* PIN */
+.pin-gate{max-width:360px;margin:auto;padding:24px 20px;text-align:center}
+.pin-gate>img{width:56px;height:56px;border-radius:16px;margin-bottom:16px;object-fit:contain}
+.pin-gate .eyebrow{margin-bottom:8px}
+.pin-gate h2{margin-bottom:6px;font:800 22px var(--font-display)}
+.pin-gate>p:not(.eyebrow){margin:0 0 24px;color:var(--muted);font-size:14px}
+.pin-dots{display:flex;justify-content:center;gap:16px;margin:24px 0}
+.pin-dots i{width:14px;height:14px;border:2px solid #8da89b;border-radius:50%;transition:all .15s}
+.pin-dots i.filled{background:var(--green);border-color:var(--green);transform:scale(1.1)}
+.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:260px;margin:0 auto 20px}
+.pin-keypad button{height:56px;border:1px solid #29443a;border-radius:50%;color:#f3fff9;background:#13231d;font-size:22px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.pin-keypad button:active{transform:scale(.95);background:#1d3e31}
+.pin-reset{max-width:390px;margin:auto;padding:20px}
+.pin-reset>p:not(.eyebrow){color:var(--muted);line-height:1.5;margin-bottom:16px}
+.pin-reset .form{grid-template-columns:1fr;padding:0}
+.pin-reset .primary{width:100%;margin-top:8px}
+
+/* PIN form */
+.pin-form{padding:0 24px 24px;display:flex;flex-direction:column;gap:16px}
+.pin-field{display:flex;flex-direction:column;gap:6px}
+.pin-field label{font-size:14px;font-weight:700;color:var(--muted)}
+.pin-input-wrapper{position:relative}
+.pin-input-wrapper input{font-size:24px;letter-spacing:.35em;text-align:center;padding-right:48px}
+.pin-toggle{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:20px;background:none}
+.pin-security-note{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin-top:8px}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom));background:#0a1511f2;border-top:1px solid #29443a;backdrop-filter:blur(16px);z-index:90}
+.bottom-nav .nav{min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;font-size:10px;color:#91a99f;background:transparent}
+.bottom-nav .nav.active{color:#37e7aa;background:transparent}
+.bottom-nav .nav span{font-size:10px;font-weight:600}
+
+/* Misc */
+.danger{color:var(--red)}
+.text-success{color:var(--green)}
+[hidden]{display:none!important}
+
+/* Desktop */
+@media(min-width:768px){
+  .brand-panel{display:flex;flex:1;background:linear-gradient(145deg,#063f31,#0a1f18);padding:clamp(40px,8vw,110px);flex-direction:column;justify-content:center;color:#fff}
+  .brand-panel img{width:55px;height:55px;border-radius:14px;background:#fff;object-fit:contain}
+  .brand-panel .eyebrow{margin-top:60px;color:#9de2c9}
+  .brand-panel h1{max-width:520px;margin:0;font:800 clamp(40px,5vw,64px)/1.05 var(--font-display);letter-spacing:-3px;color:#fff}
+  .brand-panel>p:last-child{max-width:460px;color:#bbd6ca;font-size:18px;line-height:1.7;margin-top:20px}
+  .auth{display:grid;grid-template-columns:1fr 1fr}
+  .auth-card{align-self:center;justify-self:center;padding:30px;width:min(480px,100%)}
+  .mobile-logo{display:none!important}
+  aside{position:sticky;transform:none;width:260px}
+  .workspace{margin-left:260px}
+  #mobileMenu{display:none}
+  .user b{display:block}
+  .app-header{padding:20px 32px}
+  .app-header h1{font-size:26px}
+  .page{padding:24px 32px 24px}
+  .modal{align-items:center;padding:24px}
+  .modal-card{border-radius:20px;max-height:90dvh;transform:translateY(16px)}
+  .modal-card::before{display:none}
+  .bottom-nav{display:none}
+  .page{padding-bottom:24px!important}
+  .stats{grid-template-columns:repeat(6,1fr)}
+  .stat:nth-child(1),.stat:nth-child(2){grid-column:span 3}
+  .stat:nth-child(3),.stat:nth-child(4),.stat:nth-child(5){grid-column:span 2}
+  .grid{grid-template-columns:1.3fr .7fr}
+  .form{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:767px){
+  .auth-card{min-height:100dvh;display:grid;align-content:center;padding:24px}
+  .auth-card img.mobile-logo{margin-bottom:24px}
+  aside{box-shadow:18px 0 40px rgba(12,35,27,.22)}
+}
+</style>
 </head>
 <body>
+<div id="splash" class="splash">
+  <img src="https://i.postimg.cc/XYrDGNX8/D90E30FC-437C-4185-8C32-AC9A848B5098.png" alt="KudiFlow">
+  <span>Loading your secure workspace…</span>
+</div>
+
+<div id="toast" role="status"></div>
+
+<main id="auth" class="auth" hidden>
+  <section class="brand-panel">
+    <img src="https://i.postimg.cc/XYrDGNX8/D90E30FC-437C-4185-8C32-AC9A848B5098.png" alt="KudiFlow">
+    <p class="eyebrow">KNOW YOUR NUMBERS</p>
+    <h1>Run your business with clarity.</h1>
+    <p>Track sales, expenses, customer debts and profit from one secure place.</p>
+  </section>
+  <section class="auth-card">
+    <img class="mobile-logo" src="https://i.postimg.cc/XYrDGNX8/D90E30FC-437C-4185-8C32-AC9A848B5098.png" alt="KudiFlow">
+    <div id="loginView">
+      <p class="eyebrow">WELCOME BACK</p>
+      <h2>Sign in to KudiFlow</h2>
+      <form id="loginForm">
+        <label>Email<input id="loginEmail" type="email" required autocomplete="email"></label>
+        <label>Password<input id="loginPassword" type="password" required autocomplete="current-password"></label>
+        <button class="primary">Sign in <span>→</span></button>
+      </form>
+      <button class="link" id="forgot">Forgot password?</button>
+      <p>New to KudiFlow? <button class="link" data-auth="signup">Create your account</button></p>
+    </div>
+    <div id="signupView" hidden>
+      <p class="eyebrow">START FOR FREE</p>
+      <h2>Create your business account</h2>
+      <form id="signupForm">
+        <label>Full name<input id="fullName" required></label>
+        <label>Business name<input id="businessName" required></label>
+        <label>Phone number<input id="phone" type="tel" required></label>
+        <label>Email<input id="signupEmail" type="email" required></label>
+        <label>Password<input id="signupPassword" type="password" minlength="8" required></label>
+        <label>Confirm password<input id="confirmPassword" type="password" minlength="8" required></label>
+        <button class="primary">Create secure account <span>→</span></button>
+      </form>
+      <p>Already have an account? <button class="link" data-auth="login">Sign in</button></p>
+    </div>
+  </section>
+</main>
+
+<div id="drawerBackdrop" hidden></div>
+
+<div id="app" hidden>
+  <aside>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;">
+      <a class="brand">
+        <img src="https://i.postimg.cc/XYrDGNX8/D90E30FC-437C-4185-8C32-AC9A848B5098.png" alt="KudiFlow">
+        <span>KudiFlow</span>
+      </a>
+      <button class="x" id="closeSidebar" style="position:static;width:32px;height:32px;font-size:20px;">×</button>
+    </div>
+    <nav>
+      <button class="nav active" data-page="dashboard">⌂ <span>Overview</span></button>
+      <button class="nav" data-page="orders">▤ <span>Orders</span></button>
+      <button class="nav" data-page="customers">♙ <span>Customers</span></button>
+      <button class="nav" data-page="products">▣ <span>Products</span></button>
+      <button class="nav" data-page="debts">₦ <span>Debts</span></button>
+      <button class="nav" data-page="expenses">⌁ <span>Expenses</span></button>
+      <button class="nav" data-page="reports">◔ <span>Reports</span></button>
+    </nav>
+    <div class="side-bottom">
+      <button class="nav" data-page="settings">⚙ <span>Settings</span></button>
+      <button class="nav" id="logout">↪ <span>Sign out</span></button>
+    </div>
+  </aside>
+  <section class="workspace">
+    <header class="app-header">
+      <button id="mobileMenu">☰</button>
+      <div>
+        <p class="eyebrow" id="pageKicker">BUSINESS OVERVIEW</p>
+        <h1 id="pageTitle">Good morning</h1>
+      </div>
+      <div class="user">
+        <span id="userInitial">K</span>
+        <b id="userName"></b>
+      </div>
+    </header>
+    <div id="content"></div>
+  </section>
+</div>
+
+<div id="modal" class="modal" hidden>
+  <div class="modal-card">
+    <button class="x" id="closeModal">×</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,sendPasswordResetEmail,EmailAuthProvider,reauthenticateWithCredential}from'https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js';
+import{getFirestore,doc,setDoc,getDoc,collection,addDoc,updateDoc,deleteDoc,onSnapshot,query,orderBy,serverTimestamp,runTransaction,writeBatch}from'https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js';
+
+const firebaseConfig={
+  apiKey:'AIzaSyA6i1zdVgBOqH2nA0vlPpu5pd3VmRXjqwo',
+  authDomain:'kudiflow-2975c.firebaseapp.com',
+  projectId:'kudiflow-2975c',
+  storageBucket:'kudiflow-2975c.firebasestorage.app',
+  messagingSenderId:'109925171440',
+  appId:'1:109925171440:web:4ba65c60731f8154df0235',
+  measurementId:'G-0PF870T4KZ'
+};
+
+const fb=initializeApp(firebaseConfig),auth=getAuth(fb),db=getFirestore(fb);
+let profile=null,businessId=null,data={customers:[],products:[],orders:[],expenses:[]},unsub=[],signupInProgress=false;
+const $=s=>document.querySelector(s),money=n=>new Intl.NumberFormat('en-NG',{style:'currency',currency:'NGN',maximumFractionDigits:0}).format(Number(n||0)),toast=(m,type='')=>{let t=$('#toast');t.textContent=m;t.className='show '+(type||'');setTimeout(()=>t.className='',3300)};
+
+function cleanPhone(v){let n=v.replace(/\D/g,'');if(n.startsWith('0'))n='234'+n.slice(1);if(!n.startsWith('234'))n='234'+n;return n}
+function status(total,paid){return paid>=total?'PAID':paid>0?'PARTIALLY_PAID':'OWING'}
+function openModal(html,options={}){$('#modalContent').innerHTML=html;$('#modal').dataset.locked=options.locked?'true':'';$('#modal').hidden=false}
+function closeModal(){$('#modal').hidden=true;delete $('#modal').dataset.locked}
+$('#closeModal').onclick=()=>{if(!$('#modal').dataset.locked)closeModal()};
+$('#modal').onclick=e=>{if(e.target===$('#modal')&&!$('#modal').dataset.locked)closeModal()};
+
+async function signup(e){e.preventDefault();signupInProgress=true;let name=$('#fullName').value.trim(),biz=$('#businessName').value.trim(),email=$('#signupEmail').value.trim(),password=$('#signupPassword').value,phone=$('#phone').value.trim();if(password!==$('#confirmPassword').value)return toast('Passwords do not match.');try{let c=await createUserWithEmailAndPassword(auth,email,password),bid=crypto.randomUUID(),now=serverTimestamp();await setDoc(doc(db,'businesses',bid),{name:biz,ownerId:c.user.uid,phone,currency:'NGN',createdAt:now,updatedAt:now});await setDoc(doc(db,'users',c.user.uid),{uid:c.user.uid,fullName:name,email,phone,businessId:bid,role:'owner',businessName:biz,trialEligible:true,createdAt:now,updatedAt:now});signupInProgress=false;toast('Your KudiFlow account is ready.');setTimeout(()=>location.reload(),300)}catch(e){signupInProgress=false;toast(e.code==='auth/email-already-in-use'?'This email already has an account.':'Could not create account. Please try again.')}}
+$('#signupForm').onsubmit=signup;
+$('#loginForm').onsubmit=async e=>{e.preventDefault();try{await signInWithEmailAndPassword(auth,$('#loginEmail').value.trim(),$('#loginPassword').value);toast('Welcome back.')}catch(e){toast('Incorrect email or password.')}};
+document.querySelectorAll('[data-auth]').forEach(b=>b.onclick=()=>{$('#loginView').hidden=b.dataset.auth==='signup';$('#signupView').hidden=b.dataset.auth!=='signup'});
+$('#forgot').onclick=()=>{openModal(`<p class="eyebrow">ACCOUNT RECOVERY</p><h2>Reset your password</h2><p style="color:var(--muted);margin:8px 0 20px;">Enter the email linked to your KudiFlow account. We will send a secure reset link.</p><form id="resetPasswordForm" class="form"><label class="wide">Email<input id="resetEmail" type="email" autocomplete="email" required></label><div class="form-actions"><button type="button" class="secondary" onclick="closeModal()">Cancel</button><button class="primary">Send reset link</button></div></form>`);$('#resetPasswordForm').onsubmit=async e=>{e.preventDefault();try{await sendPasswordResetEmail(auth,$('#resetEmail').value.trim());closeModal();toast('Password reset link sent. Check your email.')}catch(e){toast('We could not send a reset link. Check the email and try again.')}}};
+$('#logout').onclick=()=>{profile=null;businessId=null;unsub.forEach(x=>x());unsub=[];signOut(auth);$('#app').hidden=true;$('#auth').hidden=false};
+
+function listen(){unsub.forEach(x=>x());unsub=[];['customers','products','orders','expenses'].forEach(name=>unsub.push(onSnapshot(query(collection(db,'businesses',businessId,name),orderBy('createdAt','desc')),s=>{data[name]=s.docs.map(d=>({id:d.id,...d.data()}));render()},()=>toast(`Could not load ${name}. Check your Firestore rules.`))))}
+
+const navLabels={dashboard:['BUSINESS OVERVIEW','Good morning'],orders:['ORDER MANAGEMENT','Orders'],customers:['CUSTOMER LEDGER','Customers'],products:['INVENTORY','Products'],debts:['MONEY TO COLLECT','Outstanding debts'],expenses:['BUSINESS COSTS','Expenses'],reports:['BUSINESS INSIGHTS','Reports'],settings:['ACCOUNT & BUSINESS','Settings'],language:['PREFERENCES','Language']};
+let page='dashboard';
+document.querySelectorAll('.nav[data-page]').forEach(b=>b.onclick=()=>{page=b.dataset.page;document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===page));render();if(window.innerWidth<768){document.querySelector('aside').classList.remove('mobile-open');$('#drawerBackdrop').hidden=true}});
+
+function totals(){let today=new Date().toDateString(),orders=data.orders,rev=orders.filter(o=>o.createdAt?.toDate?.().toDateString()===today).reduce((a,o)=>a+Number(o.total||0),0),debt=orders.reduce((a,o)=>a+Number(o.amountOwing||0),0),pending=orders.filter(o=>o.deliveryStatus!=='DELIVERED'&&o.deliveryStatus!=='CANCELLED').length,profit=orders.reduce((a,o)=>a+Number(o.grossProfit||0),0)-data.expenses.reduce((a,x)=>a+Number(x.amount||0),0);return{rev,debt,pending,profit}}
+
+function kfGreeting(){const h=new Date().getHours();return kfLanguage==='ha'?(h<12?'Barka da safe':h<17?'Barka da rana':'Barka da yamma'):kfLanguage==='ar'?(h<12?'صباح الخير':h<17?'مساء الخير':'مساء الخير'):kfLanguage==='fr'?(h<12?'Bonjour':h<17?'Bon après-midi':'Bonsoir'):(h<12?'Good morning':h<17?'Good afternoon':'Good evening')}
+
+function render(){if(!profile)return;let [kick,title]=navLabels[page]||navLabels.dashboard;$('#pageKicker').textContent=kick;$('#pageTitle').textContent=page==='dashboard'?`${kfGreeting()}, ${profile.fullName.split(' ')[0]} 👋`:page==='language'?'Language':title;let c=$('#content');
+if(page==='dashboard'){const t=totals(),recent=data.orders.slice(0,5),debts=data.orders.filter(o=>Number(o.amountOwing)>0);c.innerHTML=`<div class="page"><div class="greeting"><h1>${kfGreeting()}, ${profile.fullName.split(' ')[0]} 👋</h1><p>${kfLanguage==='ha'?'Ga kasuwancinka a takaice':kfLanguage==='ar'?'إليك نظرة عامة على عملك':kfLanguage==='fr'?'Voici votre entreprise en un coup d\'œil':'Here\'s your business at a glance'}</p></div><div class="stats"><div class="stat"><p>${kfLanguage==='ha'?'Tallace-tallacen yau':kfLanguage==='ar'?'مبيعات اليوم':kfLanguage==='fr'?'Ventes du jour':'Today\'s Sales'}</p><h3>${money(t.rev)}</h3><small>${kfLanguage==='ha'?'Kudin shiga yau':kfLanguage==='ar'?'إيرادات اليوم':kfLanguage==='fr'?'Revenu aujourd\'hui':'Revenue today'}</small></div><div class="stat"><p>${kfLanguage==='ha'?'Ribar net':kfLanguage==='ar'?'صافي الربح':kfLanguage==='fr'?'Profit net':'Net Profit'}</p><h3>${money(t.profit)}</h3><small>${kfLanguage==='ha'?'Kudin da aka samu bayan kudaden':kfLanguage==='ar''=>'المبيعات ناقص التكاليف':kfLanguage==='fr'?'Ventes moins coûts':'Sales minus costs'}</small></div><div class="stat"><p>${kfLanguage==='ha'?'Bashin da ake bi':kfLanguage==='ar'?'الديون المستحقة':kfLanguage==='fr'?'Dettes en suspens':'Outstanding Debt'}</p><h3>${money(t.debt)}</h3><small>${kfLanguage==='ha'?'Kudin da ake tara':kfLanguage==='ar'?'المال للتحصيل':kfLanguage==='fr'?'Argent à collecter':'Money to collect'}</small></div><div class="stat"><p>${kfLanguage==='ha'?'Umarni masu jira':kfLanguage==='ar'?'الطلبات المعلقة':kfLanguage==='fr'?'Commandes en attente':'Pending Orders'}</p><h3>${t.pending}</h3><small>${kfLanguage==='ha'?'Ba a isar da shi ba':kfLanguage==='ar'?'لم يتم التسليم':kfLanguage==='fr'?'Non livré':'Not delivered'}</small></div><div class="stat"><p>${kfLanguage==='ha'?'Abokan ciniki':kfLanguage==='ar'?'العملاء':kfLanguage==='fr'?'Clients':'Customers'}</p><h3>${data.customers.length}</h3><small>${kfLanguage==='ha'?'Abokan ciniki da aka adana':kfLanguage==='ar'?'العملاء المحفوظون':kfLanguage==='fr'?'Clients enregistrés':'Saved customers'}</small></div></div><div class="dashboard-sections"><div class="dashboard-section" id="viewRecentOrders"><div class="section-icon">📝</div><div class="section-text"><h4>${kfLanguage==='ha'?'Umarni na baya-bayan nan':kfLanguage==='ar'?'الطلبات الأخيرة':kfLanguage==='fr'?'Commandes récentes':'Recent orders'}</h4><p>${recent.length} ${recent.length===1?(kfLanguage==='ha'?'umarni':kfLanguage==='ar'?'طلب':kfLanguage==='fr'?'commande':'order'):(kfLanguage==='ha'?'umarni':kfLanguage==='ar'?'طلبات':kfLanguage==='fr'?'commandes':'orders')}</p></div><span class="section-arrow">${kfLanguage==='ha'?'Duba duka →':kfLanguage==='ar'?'عرض الكل →':kfLanguage==='fr'?'Voir tout →':'View all →'}</span></div><div class="dashboard-section" id="viewDebtOverview"><div class="section-icon">💰</div><div class="section-text"><h4>${kfLanguage==='ha'?'Duban bashi':kfLanguage==='ar'?'نظرة عامة على الديون':kfLanguage==='fr'?'Aperçu des dettes':'Debt overview'}</h4><p>${debts.length} ${debts.length===1?(kfLanguage==='ha'?'abokin ciniki':kfLanguage==='ar'?'عميل':kfLanguage==='fr'?'client':'customer'):(kfLanguage==='ha'?'abokan ciniki':kfLanguage==='ar'?'عملاء':kfLanguage==='fr'?'clients':'customers')}</p></div><span class="section-arrow">${kfLanguage==='ha'?'Duba duka →':kfLanguage==='ar'?'عرض الكل →':kfLanguage==='fr'?'Voir tout →':'View all →'}</span></div></div></div>`;$('#viewRecentOrders').onclick=()=>showRecentOrders();$('#viewDebtOverview').onclick=()=>showDebtOverview();return}
+if(page==='customers')return listCustomers(c);if(page==='products')return listProducts(c);if(page==='orders')return listOrders(c);if(page==='debts')return listDebts(c);if(page==='expenses')return listExpenses(c);if(page==='reports')return reports(c);if(page==='language')return showLanguagePage(c);if(page==='settings')return settings(c);
+}
+
+function table(rows,heads){return `<div class="panel table-wrap" style="padding:0;"><table class="table"><thead><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows||`<tr><td colspan="${heads.length}" class="empty">${kfLanguage==='ha'?'Babu komai nan ba.':kfLanguage==='ar'?'لا شيء هنا بعد.':kfLanguage==='fr'?'Rien ici pour l\'instant.':'Nothing here yet.'}</td></tr>`}</tbody></table></div>`}
+
+function showRecentOrders(){const orders=data.orders;openModal(`<div class="sheet-head" style="padding:0 24px 16px;"><div><h2>${kfLanguage==='ha'?'Umarni na baya-bayan nan':kfLanguage==='ar'?'الطلبات الأخيرة':kfLanguage==='fr'?'Commandes récentes':'Recent orders'}</h2><p style="color:var(--muted);font-size:14px;">${orders.length} ${orders.length===1?(kfLanguage==='ha'?'umarni':kfLanguage==='ar'?'طلب':kfLanguage==='fr'?'commande':'order'):(kfLanguage==='ha'?'umarni':kfLanguage==='ar'?'طلبات':kfLanguage==='fr'?'commandes':'orders')}</p></div></div><div class="sheet-list">${orders.length?orders.map(o=>`<div class="sheet-item"><div class="sheet-item-header"><div><span class="sheet-item-title">${o.customerName||'Walk-in customer'}</span><p class="sheet-item-meta">${o.orderNumber||'Order'} · ${o.createdAt?.toDate?.().toLocaleDateString?.()||'Recently'}</p></div><div class="sheet-item-amount"><span class="sheet-item-amount-value">${money(o.total)}</span><span class="badge ${o.paymentStatus==='PAID'?'paid':o.paymentStatus==='PARTIALLY_PAID'?'partially_paid':'owing'}">${(o.paymentStatus||'OWING').replace(/_/g,' ')}</span></div></div></div>`).join(''):`<div class="empty">${kfLanguage==='ha'?'Babu umarni ba tare da.':kfLanguage==='ar'?'لا توجد طلبات بعد.':kfLanguage==='fr'?'Pas encore de commandes.':'No orders yet.'}</div>'}</div><button class="secondary sheet-close" id="sheetClose">${kfLanguage==='ha'?'Rufe':kfLanguage==='ar'?'إغلاق':kfLanguage==='fr'?'Fermer':'Close'}</button>`);$('#sheetClose').onclick=closeModal}
+
+function showDebtOverview(){const debts=data.orders.filter(o=>Number(o.amountOwing)>0),dateFor=o=>{const d=o.createdAt?.toDate?.()||new Date();d.setDate(d.getDate()+30);return d.toLocaleDateString()};openModal(`<div class="sheet-head" style="padding:0 24px 16px;"><div><h2>${kfLanguage==='ha'?'Duban bashi':kfLanguage==='ar'?'نظرة عامة على الديون':kfLanguage==='fr'?'Aperçu des dettes':'Debt overview'}</h2><p style="color:var(--muted);font-size:14px;">${debts.length} ${debts.length===1?(kfLanguage==='ha'?'abokin ciniki':kfLanguage==='ar'?'عميل':kfLanguage==='fr'?'client':'customer'):(kfLanguage==='ha'?'abokan ciniki':kfLanguage==='ar'?'عملاء':kfLanguage==='fr'?'clients':'customers')}</p></div></div><div class="debt-cards">${debts.length?debts.map(o=>`<article class="debt-card"><div class="debt-card-top"><div><b>${o.customerName||'Customer'}</b><p>${kfLanguage==='ha'?'Ranar biya:':kfLanguage==='ar'?'تاريخ الاستحقاق:':kfLanguage==='fr'?'Date d\'échéance:':'Due date:'} ${dateFor(o)}</p></div><div class="debt-amount"><b>${money(o.amountOwing)}</b><span>${kfLanguage==='ha'?'Bashi':kfLanguage==='ar'?'مستحق':kfLanguage==='fr'?'En suspens':'Outstanding'}</span></div></div><div class="debt-card-actions"><button class="primary remind" data-phone="${o.customerPhone||''}" data-name="${o.customerName||'Customer'}" data-debt="${o.amountOwing}">${kfLanguage==='ha'?'Tambaya ta WhatsApp':kfLanguage==='ar'?'تذكير واتساب':kfLanguage==='fr'?'Rappel WhatsApp':'WhatsApp Remind'}</button>${o.customerPhone?`<a class="secondary call-debtor" href="tel:${cleanPhone(o.customerPhone)}">${kfLanguage==='ha'?'Kira':kfLanguage==='ar'?'اتصال':kfLanguage==='fr'?'Appeler':'Call'}</a>`:`<button class="secondary" disabled>${kfLanguage==='ha'?'Kira':kfLanguage==='ar'?'اتصال':kfLanguage==='fr'?'Appeler':'Call'}</button>`}</div></article>`).join(''):`<div class="empty">${kfLanguage==='ha'?'Babu bashin da ake da shi. Kyakkyawan.':kfLanguage==='ar'?'لا توجد أرصدة مستحقة. ممتاز.':kfLanguage==='fr'?'Pas de soldes impayés. Excellent.':'No outstanding balances. Excellent.'}</div>'}</div><button class="secondary sheet-close" id="sheetClose">${kfLanguage==='ha'?'Rufe':kfLanguage==='ar'?'إغلاق':kfLanguage==='fr'?'Fermer':'Close'}</button>`);$('#sheetClose').onclick=closeModal;bindRemind()}
+
+function listCustomers(c){c.innerHTML=`<div class="page"><div class="toolbar"><div><p class="eyebrow">CUSTOMER DIRECTORY</p><h2>${kfLanguage==='ha'?'Jerin abokan ciniki':kfLanguage==='ar'?'دليل العملاء':kfLanguage==='fr'?'Annuaire clients':'Customer ledger'}</h2></div><button class="primary" id="addCustomer">+ ${kfLanguage==='ha'?'Ƙara abokin ciniki':kfLanguage==='ar'?'إضافة عميل':kfLanguage==='fr'?'Ajouter client':'Add customer'}</button></div>${table(data.customers.map(x=>`<tr><td><b>${x.name}</b><br><small style="color:var(--muted);">${x.phone||'No phone'}</small></td><td>${money(x.totalPurchases)}</td><td>${money(x.totalPaid)}</td><td class="${x.outstanding>0?'danger':''}">${money(x.outstanding)}</td><td><button class="action editCustomer" data-id="${x.id}">${kfLanguage==='ha'?'Gyara':kfLanguage==='ar'?'تعديل':kfLanguage==='fr'?'Modifier':'Edit'}</button></td></tr>`).join(''),['Customer','Purchased','Paid','Outstanding',''])}</div>`;$('#addCustomer').onclick=customerForm;document.querySelectorAll('.editCustomer').forEach(b=>b.onclick=()=>customerForm(data.customers.find(x=>x.id===b.dataset.id)))}
+
+function customerForm(x={}){openModal(`<h2>${x.id?(kfLanguage==='ha'?'Gyara':kfLanguage==='ar'?'تعديل':kfLanguage==='fr'?'Modifier':'Edit'):(kfLanguage==='ha''=>'Ƙara':kfLanguage==='ar'?'إضافة':kfLanguage==='fr'?'Ajouter':'Add')} ${kfLanguage==='ha'?'abokin ciniki':kfLanguage==='ar'?'عميل':kfLanguage==='fr'?'client':'customer'}</h2><form id="customerForm" class="form"><label class="wide">Name<input name="name" value="${x.name||''}" required></label><label class="wide">Phone<input name="phone" value="${x.phone||''}" required></label><label class="wide">WhatsApp number<input name="whatsapp" value="${x.whatsapp||''}"></label><label class="wide">Email<input name="email" type="email" value="${x.email||''}"></label><label class="wide">Address<input name="address" value="${x.address||''}"></label><label class="wide">Notes<textarea name="notes">${x.notes||''}</textarea></label><div class="form-actions"><button type="button" class="secondary" onclick="closeModal()">${kfLanguage==='ha'?'Soke':kfLanguage==='ar'?'إلغاء':kfLanguage==='fr'?'Annuler':'Cancel'}</button><button class="primary">${kfLanguage==='ha'?'Ajiye':kfLanguage==='ar'?'حفظ':kfLanguage==='fr'?'Enregistrer':'Save customer'}</button></div></form>`);$('#customerForm').onsubmit=async e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target));try{let base={...f,updatedAt:serverTimestamp()};if(x.id)await updateDoc(doc(db,'businesses',businessId,'customers',x.id),base);else await addDoc(collection(db,'businesses',businessId,'customers'),{...base,totalPurchases:0,totalPaid:0,outstanding:0,createdAt:serverTimestamp()});closeModal();toast(kfLanguage==='ha'?'An adana abokin ciniki.':kfLanguage==='ar'?'تم حفظ العميل.':kfLanguage==='fr'?'Client enregistré.':'Customer saved.')}catch(e){toast('Could not save customer.')}}}
+
+function listProducts(c){c.innerHTML=`<div class="page"><div class="toolbar"><div><p class="eyebrow">INVENTORY</p><h2>${kfLanguage==='ha'?'Kayayyaki':kfLanguage==='ar'?'المنتجات':kfLanguage==='fr'?'Produits':'Products'}</h2></div><button class="primary" id="addProduct">+ ${kfLanguage==='ha'?'Ƙara kaya':kfLanguage==='ar'?'إضافة منتج':kfLanguage==='fr'?'Ajouter produit':'Add product'}</button></div>${table(data.products.map(x=>`<tr><td><b>${x.name}</b><br><small style="color:var(--muted);">${x.sku||'No SKU'} · ${x.category||'General'}</small></td><td>${money(x.sellingPrice)}</td><td>${money(x.costPrice)}</td><td class="${x.stockQuantity<=x.lowStockThreshold?'danger':''}">${x.stockQuantity}</td><td><button class="action editProduct" data-id="${x.id}">${kfLanguage==='ha'?'Gyara':kfLanguage==='ar'?'تعديل':kfLanguage==='fr'?'Modifier':'Edit'}</button></td></tr>`).join(''),['Product','Selling price','Cost price','Stock',''])}</div>`;$('#addProduct').onclick=productForm;document.querySelectorAll('.editProduct').forEach(b=>b.onclick=()=>productForm(data.products.find(x=>x.id===b.dataset.id)))}
+
+function productForm(x={}){openModal(`<h2>${x.id?(kfLanguage==='ha'?'Gyara':kfLanguage==='ar'?'تعديل':kfLanguage==='fr'?'Modifier':'Edit'):(kfLanguage==='ha'?'Ƙara':kfLanguage==='ar'?'إضافة':kfLanguage==='fr'?'Ajouter':'Add')} ${kfLanguage==='ha'?'kaya':kfLanguage==='ar'?'منتج':kfLanguage==='fr'?'produit':'product'}</h2><form id="productForm" class="form"><label>Name<input name="name" value="${x.name||''}" required></label><label>SKU<input name="sku" value="${x.sku||''}"></label><label>Category<input name="category" value="${x.category||''}"></label><label>Stock quantity<input name="stockQuantity" type="number" min="0" value="${x.stockQuantity??0}" required></label><label>Selling price<input name="sellingPrice" type="number" min="0" value="${x.sellingPrice??''}" required></label><label>Cost price<input name="costPrice" type="number" min="0" value="${x.costPrice??''}" required></label><label>Low-stock alert<input name="lowStockThreshold" type="number" min="0" value="${x.lowStockThreshold??3}"></label><label>Active<select name="active"><option value="true">Yes</option><option value="false">No</option></select></label><label class="wide">Description<textarea name="description">${x.description||''}</textarea></label><div class="form-actions"><button type="button" class="secondary" onclick="closeModal()">Cancel</button><button class="primary">Save product</button></div></form>`);$('#productForm').onsubmit=async e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target));['stockQuantity','sellingPrice','costPrice','lowStockThreshold'].forEach(k=>f[k]=Number(f[k]));f.active=f.active==='true';try{if(x.id)await updateDoc(doc(db,'businesses',businessId,'products',x.id),{...f,updatedAt:serverTimestamp()});else await addDoc(collection(db,'businesses',businessId,'products'),{...f,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});closeModal();toast('Product saved.')}catch(e){toast('Could not save product.')}}}
+
+function listOrders(c){c.innerHTML=`<div class="page"><div class="toolbar"><div><p class="eyebrow">SALES & DELIVERY</p><h2>Orders</h2></div><button class="primary" id="addOrder">+ New order</button></div>${table(data.orders.map(o=>`<tr><td><b>${o.orderNumber}</b><br><small style="color:var(--muted);">${o.customerName}</small></td><td>${money(o.total)}</td><td>${money(o.amountPaid)}</td><td><span class="badge ${o.paymentStatus==='PAID'?'paid':o.paymentStatus==='PARTIALLY_PAID'?'partially_paid':'owing'}">${o.paymentStatus.replace(/_/g,' ')}</span></td><td><span class="badge pending">${o.deliveryStatus.replaceAll('_',' ')}</span></td><td>${o.amountOwing>0?`<button class="action pay" data-id="${o.id}">Record payment</button>`:''}</td></tr>`).join(''),['Order','Total','Paid','Payment','Delivery',''])}</div>`;$('#addOrder').onclick=orderForm;document.querySelectorAll('.pay').forEach(b=>b.onclick=()=>paymentForm(data.orders.find(o=>o.id===b.dataset.id)))}
+
+function orderForm(){if(!data.customers.length||!data.products.length)return toast('Add at least one customer and product first.');const opts=data.products.map(p=>`<option value="${p.id}">${p.name} — ${money(p.sellingPrice)}</option>`).join('');openModal(`<h2>Create order</h2><form id="orderForm" class="form"><label>Customer<select name="customerId" required>${data.customers.map(x=>`<option value="${x.id}">${x.name}</option>`).join('')}</select></label><label>Product<select name="productId" required>${opts}</select></label><label>Quantity<input name="quantity" type="number" min="1" value="1" required></label><label>Amount paid now<input name="amountPaid" type="number" min="0" value="0" required></label><label>Discount<input name="discount" type="number" min="0" value="0"></label><label>Delivery fee<input name="deliveryFee" type="number" min="0" value="0"></label><label class="wide">Delivery status<select name="deliveryStatus"><option>NOT_DELIVERED</option><option>PROCESSING</option><option>OUT_FOR_DELIVERY</option><option>DELIVERED</option></select></label><div class="form-actions"><button type="button" class="secondary" onclick="closeModal()">Cancel</button><button class="primary">Save order</button></div></form>`);$('#orderForm').onsubmit=async e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target)),p=data.products.find(x=>x.id===f.productId),cu=data.customers.find(x=>x.id===f.customerId),qty=Number(f.quantity),subtotal=p.sellingPrice*qty,total=Math.max(0,subtotal-Number(f.discount)+Number(f.deliveryFee)),paid=Math.min(total,Number(f.amountPaid)),owing=total-paid;try{await runTransaction(db,async tx=>{const prodRef=doc(db,'businesses',businessId,'products',p.id),customerRef=doc(db,'businesses',businessId,'customers',cu.id),[productSnap,customerSnap]=await Promise.all([tx.get(prodRef),tx.get(customerRef)]);if(!productSnap.exists()||!customerSnap.exists())throw Error('This product or customer is no longer available.');const pd=productSnap.data(),cd=customerSnap.data();if(Number(pd.stockQuantity)<qty)throw Error('Not enough stock');const orderRef=doc(collection(db,'businesses',businessId,'orders'));tx.set(orderRef,{orderNumber:`KF-${Date.now().toString().slice(-6)}`,customerId:cu.id,customerName:cu.name,customerPhone:cu.whatsapp||cu.phone,items:[{productId:p.id,name:p.name,quantity:qty,sellingPrice:p.sellingPrice,costPrice:p.costPrice}],subtotal,discount:Number(f.discount),deliveryFee:Number(f.deliveryFee),total,amountPaid:paid,amountOwing:owing,paymentStatus:status(total,paid),deliveryStatus:f.deliveryStatus,orderStatus:'CONFIRMED',grossProfit:(p.sellingPrice-p.costPrice)*qty,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});tx.update(prodRef,{stockQuantity:Number(pd.stockQuantity)-qty,updatedAt:serverTimestamp()});tx.update(customerRef,{totalPurchases:Number(cd.totalPurchases||0)+total,totalPaid:Number(cd.totalPaid||0)+paid,outstanding:Number(cd.outstanding||0)+owing,updatedAt:serverTimestamp()});if(paid>0)tx.set(doc(collection(db,'businesses',businessId,'payments')),{orderId:orderRef.id,customerId:cu.id,amount:paid,method:'Cash',recordedBy:auth.currentUser.uid,createdAt:serverTimestamp()})});closeModal();toast('Order saved securely.')}catch(error){toast(error.message||'Could not save order.')}}}
+
+function paymentForm(o){openModal(`<h2>Record payment</h2><p style="padding:0 24px 16px;color:var(--muted);">${o.customerName} still owes <b style="color:#f7fffb;">${money(o.amountOwing)}</b>.</p><form id="paymentForm" class="form"><label class="wide">Amount<input name="amount" type="number" min="1" max="${o.amountOwing}" required></label><label class="wide">Method<select name="method"><option>Cash</option><option>Bank Transfer</option><option>POS</option><option>Other</option></select></label><label class="wide">Reference / note<input name="reference"></label><div class="form-actions"><button class="primary">Record payment</button></div></form>`);$('#paymentForm').onsubmit=async e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target)),amount=Number(f.amount);if(amount>o.amountOwing)return toast('Payment cannot exceed the remaining balance.');try{await runTransaction(db,async tx=>{const orderRef=doc(db,'businesses',businessId,'orders',o.id),customerRef=doc(db,'businesses',businessId,'customers',o.customerId),[orderSnap,customerSnap]=await Promise.all([tx.get(orderRef),tx.get(customerRef)]);if(!orderSnap.exists()||!customerSnap.exists())throw Error('Order or customer could not be found.');const ord=orderSnap.data(),cd=customerSnap.data(),newPaid=Number(ord.amountPaid)+amount,newOwing=Number(ord.total)-newPaid;if(newOwing<0)throw Error('Payment cannot exceed the remaining balance.');tx.update(orderRef,{amountPaid:newPaid,amountOwing:newOwing,paymentStatus:status(ord.total,newPaid),updatedAt:serverTimestamp()});tx.set(doc(collection(db,'businesses',businessId,'payments')),{orderId:o.id,customerId:o.customerId,amount,method:f.method,reference:f.reference,recordedBy:auth.currentUser.uid,createdAt:serverTimestamp()});tx.update(customerRef,{totalPaid:Number(cd.totalPaid||0)+amount,outstanding:Math.max(0,Number(cd.outstanding||0)-amount),updatedAt:serverTimestamp()})});closeModal();toast('Payment recorded.')}catch(error){toast(error.message||'Could not record payment.')}}}
+
+function listDebts(c){let debts=data.orders.filter(o=>o.amountOwing>0).sort((a,b)=>b.amountOwing-a.amountOwing);c.innerHTML=`<div class="page"><div class="toolbar"><div><p class="eyebrow">FOLLOW UP</p><h2>Outstanding debts</h2></div><b style="color:var(--red);">${money(debts.reduce((a,o)=>a+Number(o.amountOwing),0))} total</b></div>${table(debts.map(o=>`<tr><td><b>${o.customerName}</b><br><small style="color:var(--muted);">${o.customerPhone||''}</small></td><td>${o.orderNumber}</td><td>${money(o.total)}</td><td>${money(o.amountPaid)}</td><td class="danger">${money(o.amountOwing)}</td><td><button class="action remind" data-phone="${o.customerPhone||''}" data-name="${o.customerName}" data-debt="${o.amountOwing}">WhatsApp reminder</button></td></tr>`).join(''),['Customer','Order','Total','Paid','Remaining',''])}</div>`;bindRemind()}
+
+function bindRemind(){document.querySelectorAll('.remind').forEach(b=>b.onclick=()=>{if(!b.dataset.phone)return toast('This customer has no phone number.');let text=`Hello ${b.dataset.name}, this is a friendly reminder regarding your order. Your outstanding balance is ${money(b.dataset.debt)}. Thank you.`;window.open(`https://wa.me/${cleanPhone(b.dataset.phone)}?text=${encodeURIComponent(text)}`,'_blank','noopener')})}
+
+function listExpenses(c){c.innerHTML=`<div class="page"><div class="toolbar"><div><p class="eyebrow">COSTS</p><h2>Expenses</h2></div><button class="primary" id="addExpense">+ Add expense</button></div>${table(data.expenses.map(x=>`<tr><td><b>${x.description}</b><br><small style="color:var(--muted);">${x.category}</small></td><td>${x.date||''}</td><td>${money(x.amount)}</td></tr>`).join(''),['Expense','Date','Amount'])}</div>`;$('#addExpense').onclick=()=>openExpense()}
+
+function openExpense(){openModal(`<h2>Add expense</h2><form id="expenseForm" class="form"><label class="wide">Description<input name="description" required></label><label class="wide">Amount<input name="amount" type="number" min="1" required></label><label class="wide">Category<select name="category"><option>Transport</option><option>Delivery</option><option>Rent</option><option>Advertising</option><option>Packaging</option><option>Staff</option><option>Utilities</option><option>Other</option></select></label><label class="wide">Date<input name="date" type="date" required></label><label class="wide">Notes<textarea name="notes"></textarea></label><div class="form-actions"><button class="primary">Save expense</button></div></form>`);$('#expenseForm').onsubmit=async e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target));f.amount=Number(f.amount);try{await addDoc(collection(db,'businesses',businessId,'expenses'),{...f,createdAt:serverTimestamp()});closeModal();toast('Expense saved.')}catch(e){toast('Could not save expense.')}}}
+
+function reports(c){let t=totals(),revenue=data.orders.reduce((a,o)=>a+Number(o.total||0),0),gross=data.orders.reduce((a,o)=>a+Number(o.grossProfit||0),0),expenses=data.expenses.reduce((a,o)=>a+Number(o.amount||0),0);c.innerHTML=`<div class="page"><p class="eyebrow">FINANCIAL SNAPSHOT</p><h2>Reports</h2><div class="stats"><div class="stat"><p>TOTAL REVENUE</p><h3>${money(revenue)}</h3></div><div class="stat"><p>GROSS PROFIT</p><h3>${money(gross)}</h3></div><div class="stat"><p>EXPENSES</p><h3>${money(expenses)}</h3></div><div class="stat"><p>NET PROFIT</p><h3>${money(gross-expenses)}</h3></div><div class="stat"><p>OUTSTANDING</p><h3>${money(t.debt)}</h3></div></div><div class="panel" style="margin-top:20px"><h2>Export</h2><p style="color:var(--muted);margin:8px 0 16px;">Download your orders as a CSV file for bookkeeping.</p><button class="primary" id="export">Export orders CSV</button></div></div>`;$('#export').onclick=()=>{let out=['Order,Customer,Total,Paid,Owing,Payment Status',...data.orders.map(o=>[o.orderNumber,o.customerName,o.total,o.amountPaid,o.amountOwing,o.paymentStatus].map(x=>`"${x}"`).join(','))].join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/csv'}));a.download='kudiflow-orders.csv';a.click();URL.revokeObjectURL(a.href)}}
+
+function settings(c){
+  c.innerHTML=`<div class="page settings-page">
+    <div class="settings-card">
+      <div class="settings-card-header"><h3>Business information</h3></div>
+      <div class="settings-card-body">
+        <div class="settings-field">
+          <div class="settings-field-info">
+            <span class="settings-field-label">${kfLanguage==='ha'?'Sunan kasuwanci':kfLanguage==='ar'?'اسم النشاط التجاري':kfLanguage==='fr'?'Nom de l\'entreprise':'Business name'}</span>
+            <span class="settings-field-value">${profile.businessName||'-'}</span>
+          </div>
+        </div>
+        <div class="settings-field">
+          <div class="settings-field-info">
+            <span class="settings-field-label">${kfLanguage==='ha'?'Wayar kasuwanci':kfLanguage==='ar'?'هاتف النشاط التجاري':kfLanguage==='fr'?'Téléphone de l\'entreprise':'Business phone'}</span>
+            <span class="settings-field-value">${profile.phone||'-'}</span>
+          </div>
+          <span class="settings-field-action">✎</span>
+        </div>
+        <div class="settings-field">
+          <div class="settings-field-info">
+            <span class="settings-field-label">${kfLanguage==='ha'?'Sunan mai kasuwanci':kfLanguage==='ar'?'اسم المالك':kfLanguage==='fr'?'Nom du propriétaire':'Owner name'}</span>
+            <span class="settings-field-value">${profile.fullName||'-'}</span>
+          </div>
+          <span class="settings-field-action">✎</span>
+        </div>
+        <div class="settings-field">
+          <div class="settings-field-info">
+            <span class="settings-field-label">Email</span>
+            <span class="settings-field-value">${profile.email||'-'}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="settings-card">
+      <div class="settings-card-header"><h3>Preferences</h3></div>
+      <div class="settings-card-body">
+        <div class="settings-field" id="goToLanguage" style="cursor:pointer;">
+          <div class="settings-field-info">
+            <span class="settings-field-label">${kfLanguage==='ha'?'Harshe':kfLanguage==='ar'?'اللغة':kfLanguage==='fr'?'Langue':'Language'}</span>
+            <span class="settings-field-value">${kfLanguage==='ha'?'Hausa':kfLanguage==='ar'?'العربية':kfLanguage==='fr'?'Français':'English'}</span>
+          </div>
+          <span class="settings-field-action">›</span>
+        </div>
+      </div>
+    </div>
+    <div class="settings-card">
+      <div class="settings-card-header"><h3>App security</h3></div>
+      <div class="settings-card-body">
+        <div class="settings-field" id="goToPin" style="cursor:pointer;">
+          <div class="settings-field-info">
+            <span class="settings-field-label">${kfLanguage==='ha'?'PIN mai lambobi 4':kfLanguage==='ar'?'رقم التعريف الشخصي المكون من 4 أرقام':kfLanguage==='fr'?'PIN à 4 chiffres':'4-digit PIN'}</span>
+            <span class="settings-field-value" style="color:var(--green);">${profile.pinHash?(kfLanguage==='ha'?'An kunna':kfLanguage==='ar'?'مفعل':kfLanguage==='fr'?'Activé':'Enabled'):(kfLanguage==='ha'?'An kashe':kfLanguage==='ar'?'معطل':kfLanguage==='fr'?'Désactivé':'Disabled')}</span>
+          </div>
+          <span class="settings-field-action">›</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  $('#goToLanguage').onclick=()=>{page='language';render()};
+  $('#goToPin').onclick=()=>kfPinSettings();
+}
+
+function showLanguagePage(c){
+  const langs=[
+    {code:'en',name:'English',native:'English'},
+    {code:'ha',name:'Hausa',native:'Hausa'},
+    {code:'ar',name:'Arabic',native:'العربية'},
+    {code:'fr',name:'French',native:'Français'}
+  ];
+  c.innerHTML=`<div class="page language-page">
+    <button class="back-button" id="backFromLang">← ${kfLanguage==='ha'?'Saituna':kfLanguage==='ar''=>'الإعدادات':kfLanguage==='fr'?'Paramètres':'Settings'}</button>
+    <h2 style="margin-bottom:16px;">${kfLanguage==='ha'?'Harshe':kfLanguage==='ar'?'اللغة':kfLanguage==='fr'?'Langue':'Language'}</h2>
+    <div class="language-list">
+      ${langs.map(l=>`<div class="language-item" data-lang="${l.code}">
+        <div class="language-item-info">
+          <span class="language-item-name">${l.name}</span>
+          <span class="language-item-native">${l.native}</span>
+        </div>
+        ${(profile.language||'en')===l.code?'<span class="language-item-check">✓</span>':''}
+      </div>`).join('')}
+    </div>
+    <p class="language-note">${kfLanguage==='ha'?'Manhajar za ta sake farawa don amfani da canje-canje.':kfLanguage==='ar'?'سيتم إعادة تشغيل التطبيق لتطبيق التغييرات.':kfLanguage==='fr'?'L\'application redémarrera pour appliquer les modifications.':'The app will restart to apply changes.'}</p>
+  </div>`;
+  $('#backFromLang').onclick=()=>{page='settings';render()};
+  document.querySelectorAll('.language-item').forEach(item=>item.onclick=async()=>{
+    const lang=item.dataset.lang;
+    try{
+      await updateDoc(doc(db,'users',auth.currentUser.uid),{language:lang,updatedAt:serverTimestamp()});
+      profile.language=lang;kfLanguage=lang;
+      kfApplyTheme(profile.theme||'dark');
+      toast(kfLanguage==='ha'?'An sabunta harshe.':kfLanguage==='ar''=>'تم تحديث اللغة.':kfLanguage==='fr'?'Langue mise à jour.':'Language updated.');
+      setTimeout(()=>render(),500);
+    }catch(e){toast('Could not save language.')}
+  });
+}
+
+/* ========== PIN SECURITY ========== */
+let kfLanguage='en';
+const kfHausa={"Overview":"Taƙaitaccen bayani","Orders":"Umarni","Customers":"Abokan ciniki","Products":"Kayayyaki","Debts":"Basussuka","Expenses":"Kashe-kashe","Reports":"Rahotanni","Settings":"Saituna","Sign out":"Fita","Business profile":"Bayanan kasuwanci","Business name":"Sunan kasuwanci","Business phone":"Wayar kasuwanci","Owner name":"Sunan mai kasuwanci","Email":"Imel","Password":"Kalmar sirri","Save changes":"Ajiye canje-canje","Welcome back":"Barka da dawowa","Sign in to KudiFlow":"Shiga KudiFlow","Create your account":"Ƙirƙiri asusunka","Forgot password?":"Ka manta da kalmar sirri?","Sign in":"Shiga","Create account":"Ƙirƙiri asusu","Good morning":"Barka da safe","Good afternoon":"Barka da rana","Good evening":"Barka da yamma","New order":"Sabon umarni","Add customer":"Ƙara abokin ciniki","Add product":"Ƙara kaya","Recent orders":"Umarni na baya-bayan nan","Today's sales":"Tallace-tallacen yau","Net profit":"Ribar net","Outstanding debt":"Bashin da ake bi","Pending orders":"Umarni masu jira","Language":"Harshe","App Security":"Tsaron manhaja","4-digit PIN":"PIN mai lambobi 4","Enable PIN":"Kunna PIN","Disable PIN":"Kashe PIN","Close":"Rufe","Cancel":"Soke","Confirm":"Tabbatar","Loading your secure workspace…":"Ana buɗe wajen aikinka mai tsaro…","PREFERENCES":"ZAƁUƁƁUKA","BUSINESS OVERVIEW":"DUBAN KASUWANCI","ACCOUNT & BUSINESS":"ASUSU DA KASUWANCI","Settings updated.":"An sabunta saituna.","Password reset link sent.":"An aika hanyar sabunta kalmar sirri."};
+const kfArabic={"Overview":"نظرة عامة","Orders":"الطلبات","Customers":"العملاء","Products":"المنتجات","Debts":"الديون","Expenses":"المصروفات","Reports":"التقارير","Settings":"الإعدادات","Sign out":"تسجيل الخروج","Business profile":"ملف النشاط التجاري","Business name":"اسم النشاط التجاري","Business phone":"هاتف النشاط التجاري","Owner name":"اسم المالك","Email":"البريد الإلكتروني","Password":"كلمة المرور","Save changes":"حفظ التغييرات","Welcome back":"مرحباً بعودتك","Sign in to KudiFlow":"تسجيل الدخول إلى KudiFlow","Create your account":"إنشاء حسابك","Forgot password?":"نسيت كلمة المرور؟","Sign in":"تسجيل الدخول","Create account":"إنشاء حساب","Good morning":"صباح الخير","Good afternoon":"مساء الخير","Good evening":"مساء الخير","New order":"طلب جديد","Add customer":"إضافة عميل","Add product":"إضافة منتج","Recent orders":"الطلبات الأخيرة","Today's sales":"مبيعات اليوم","Net profit":"صافي الربح","Outstanding debt":"الديون المستحقة","Pending orders":"الطلبات المعلقة","Language":"اللغة","App Security":"أمان التطبيق","4-digit PIN":"رقم التعريف الشخصي المكون من 4 أرقام","Enable PIN":"تفعيل رقم التعريف الشخصي","Disable PIN":"تعطيل رقم التعريف الشخصي","Close":"إغلاق","Cancel":"إلغاء","Confirm":"تأكيد","Loading your secure workspace…":"جارٍ تحميل مساحة العمل الآمنة…","PREFERENCES":"التفضيلات","BUSINESS OVERVIEW":"نظرة عامة على النشاط التجاري","ACCOUNT & BUSINESS":"الحساب والنشاط التجاري","Settings updated.":"تم تحديث الإعدادات.","Password reset link sent.":"تم إرسال رابط إعادة تعيين كلمة المرور."};
+const kfFrench={"Overview":"Aperçu","Orders":"Commandes","Customers":"Clients","Products":"Produits","Debts":"Dettes","Expenses":"Dépenses","Reports":"Rapports","Settings":"Paramètres","Sign out":"Déconnexion","Business profile":"Profil de l'entreprise","Business name":"Nom de l'entreprise","Business phone":"Téléphone de l'entreprise","Owner name":"Nom du propriétaire","Email":"E-mail","Password":"Mot de passe","Save changes":"Enregistrer les modifications","Welcome back":"Bon retour","Sign in to KudiFlow":"Connexion à KudiFlow","Create your account":"Créer votre compte","Forgot password?":"Mot de passe oublié ?","Sign in":"Connexion","Create account":"Créer un compte","Good morning":"Bonjour","Good afternoon":"Bon après-midi","Good evening":"Bonsoir","New order":"Nouvelle commande","Add customer":"Ajouter un client","Add product":"Ajouter un produit","Recent orders":"Commandes récentes","Today's sales":"Ventes du jour","Net profit":"Profit net","Outstanding debt":"Dettes en suspens","Pending orders":"Commandes en attente","Language":"Langue","App Security":"Sécurité de l'application","4-digit PIN":"PIN à 4 chiffres","Enable PIN":"Activer le PIN","Disable PIN":"Désactiver le PIN","Close":"Fermer","Cancel":"Annuler","Confirm":"Confirmer","Loading your secure workspace…":"Chargement de votre espace de travail sécurisé…","PREFERENCES":"PRÉFÉRENCES","BUSINESS OVERVIEW":"APERÇU DE L'ENTREPRISE","ACCOUNT & BUSINESS":"COMPTE ET ENTREPRISE","Settings updated.":"Paramètres mis à jour.","Password reset link sent.":"Lien de réinitialisation du mot de passe envoyé."};
+
+async function kfHashPin(pin,salt){const bytes=new TextEncoder().encode(pin);const key=await crypto.subtle.importKey('raw',bytes,'PBKDF2',false,['deriveBits']);const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:Uint8Array.from(atob(salt),c=>c.charCodeAt(0)),iterations:210000,hash:'SHA-256'},key,256);return btoa(String.fromCharCode(...new Uint8Array(bits)))}
+function kfRandomSalt(){const a=crypto.getRandomValues(new Uint8Array(16));return btoa(String.fromCharCode(...a))}
+function kfApplyTheme(theme){const t=['dark','light','system'].includes(theme)?theme:'dark';document.documentElement.dataset.theme=t;if(t==='dark'){document.documentElement.style.colorScheme='dark'}else if(t==='light'){document.documentElement.style.colorScheme='light'}else{document.documentElement.style.colorScheme='light dark'}}
+
+function kfPinGate(){if(!profile?.pinHash)return false;$('#app').hidden=true;let entry=[];openModal(`<div class="pin-gate native-pin"><img src="https://i.postimg.cc/XYrDGNX8/D90E30FC-437C-4185-8C32-AC9A848B5098.png" alt="KudiFlow"><p class="eyebrow">APP SECURITY</p><h2>${kfLanguage==='ha'?'Shigar da PIN ɗinka':kfLanguage==='ar'?'أدخل رقم التعريف الشخصي':kfLanguage==='fr'?'Entrez votre PIN':'Enter your PIN'}</h2><p>${kfLanguage==='ha''=>'Bude wajen aikin KudiFlow ɗinka.':kfLanguage==='ar'?'فتح مساحة عمل KudiFlow الخاصة بك.':kfLanguage==='fr'?'Déverrouillez votre espace de travail KudiFlow.':'Unlock your KudiFlow workspace.'}</p><div class="pin-dots" aria-label="Four digit PIN"><i></i><i></i><i></i><i></i></div><div class="pin-keypad">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(key=>key===''?'<span></span>':`<button type="button" data-pin-key="${key}" aria-label="${key==='⌫'?'Delete':key}">${key}</button>`).join('')}</div><button type="button" class="link" id="forgotPin">${kfLanguage==='ha'?'An manta da PIN?':kfLanguage==='ar''=>'نسيت رقم التعريف الشخصي؟':kfLanguage==='fr'?'PIN oublié ?':'Forgot PIN?'}</button></div>`,{locked:true});const draw=()=>document.querySelectorAll('.pin-dots i').forEach((dot,index)=>dot.classList.toggle('filled',index<entry.length));const submit=async()=>{const pin=entry.join('');if(await kfHashPin(pin,profile.pinSalt)!==profile.pinHash){entry=[];draw();return toast(kfLanguage==='ha'?'Wannan PIN ba daidai ba ne.':kfLanguage==='ar''=>'رقم التعريف الشخصي غير صحيح.':kfLanguage==='fr'?'Ce PIN n\'est pas correct.':'That PIN is not correct. Try again.')}document.onkeydown=null;closeModal();$('#app').hidden=false;listen();render()};const press=key=>{if(key==='⌫'){entry.pop();draw();return}if(entry.length===4)return;entry.push(String(key));draw();if(entry.length===4)setTimeout(submit,120)};document.querySelectorAll('[data-pin-key]').forEach(button=>button.onclick=()=>press(button.dataset.pinKey));document.onkeydown=e=>{if(e.key>='0'&&e.key<='9')press(e.key);if(e.key==='Backspace')press('⌫')};$('#forgotPin').onclick=()=>kfForgotPin();return true}
+
+function kfForgotPin(){document.onkeydown=null;openModal(`<div class="pin-reset"><p class="eyebrow">SECURE PIN RESET</p><h2>${kfLanguage==='ha'?'Tabbatar da asusunka':kfLanguage==='ar''=>'التحقق من حسابك':kfLanguage==='fr'?'Vérifier votre compte':'Verify your account'}</h2><p>${kfLanguage==='ha'?'Shigar da kalmar sirrin KudiFlow ɗinka don ƙirƙirin sabon PIN.':kfLanguage==='ar'?'أدخل كلمة مرور KudiFlow لإنشاء رقم تعريف شخصي جديد.':kfLanguage==='fr'?'Entrez votre mot de passe KudiFlow pour créer un nouveau PIN.':'Enter your KudiFlow password to create a new PIN. Your existing PIN is never shown.'}</p><form id="forgotPinForm" class="form"><label class="wide">Password<input id="forgotPinPassword" type="password" autocomplete="current-password" required></label><button class="primary">${kfLanguage==='ha''=>'Ci gaba':kfLanguage==='ar'?'متابعة':kfLanguage==='fr'?'Continuer':'Continue'}</button></form></div>`);$('#forgotPinForm').onsubmit=async e=>{e.preventDefault();try{const credential=EmailAuthProvider.credential(auth.currentUser.email,$('#forgotPinPassword').value);await reauthenticateWithCredential(auth.currentUser,credential);kfCreateReplacementPin()}catch{toast(kfLanguage==='ha'?'Ba mu iya tabbatar da kalmar sirrin ba.':kfLanguage==='ar''=>'لم نتمكن من التحقق من كلمة المرور.':kfLanguage==='fr'?'Nous n\'avons pas pu vérifier le mot de passe.':'We could not verify your account password.')}}}
+
+function kfCreateReplacementPin(){openModal(`<div class="pin-reset"><p class="eyebrow">SECURE PIN RESET</p><h2>${kfLanguage==='ha''=>'Ƙirƙiri sabon PIN mai lambobi 4':kfLanguage==='ar'?'إنشاء رقم تعريف شخصي جديد مكون من 4 أرقام':kfLanguage==='fr'?'Créer un nouveau PIN à 4 chiffres':'Create a new 4-digit PIN'}</h2><p>${kfLanguage==='ha''=>'Zaɓi sabon PIN don kare wannan na\'urar.':kfLanguage==='ar'?'اختر رقم تعريف شخصي جديد لحماية هذا الجهاز.':kfLanguage==='fr'?'Choisissez un nouveau PIN pour protéger cet appareil.':'Choose a new PIN to protect this device.'}</p><form id="replacementPinForm" class="form"><label class="wide">New PIN<input name="pin" inputmode="numeric" autocomplete="new-password" maxlength="4" pattern="[0-9]{4}" required></label><label class="wide">Confirm PIN<input name="confirm" inputmode="numeric" autocomplete="new-password" maxlength="4" pattern="[0-9]{4}" required></label><button class="primary">${kfLanguage==='ha''=>'Ajiye sabon PIN':kfLanguage==='ar'?'حفظ رقم التعريف الشخصي الجديد':kfLanguage==='fr'?'Enregistrer le nouveau PIN':'Save new PIN'}</button></form></div>`);$('#replacementPinForm').onsubmit=async e=>{e.preventDefault();try{const f=Object.fromEntries(new FormData(e.target));if(!/^\d{4}$/.test(f.pin)||f.pin!==f.confirm)return toast(kfLanguage==='ha'?'Yi amfani da lambobi hudu iri ɗaya a cikin filayen biyu.':kfLanguage==='ar'?'استخدم نفس الأرقام الأربعة في كلا الحقلين.':kfLanguage==='fr'?'Utilisez les mêmes quatre chiffres dans les deux champs.':'Use the same four numbers in both fields.');const salt=kfRandomSalt(),hash=await kfHashPin(f.pin,salt);await updateDoc(doc(db,'users',auth.currentUser.uid),{pinHash:hash,pinSalt:salt,pinEnabled:true,updatedAt:serverTimestamp()});Object.assign(profile,{pinHash:hash,pinSalt:salt,pinEnabled:true});closeModal();$('#app').hidden=false;listen();render();toast(kfLanguage==='ha''=>'An sake saita PIN cikin nasara.':kfLanguage==='ar''=>'تم إعادة تعيين رقم التعريف الشخصي بنجاح.':kfLanguage==='fr'?'PIN réinitialisé avec succès.':'PIN reset successfully.')}catch(error){toast(error.code==='permission-denied'?'Could not save PIN. Please publish the latest Firestore rules.':'Could not save PIN. Please try again.')}}}
+
+function kfPinSettings(){const enabled=!!profile.pinHash;openModal(`<p class="eyebrow">APP SECURITY</p><h2>${enabled?(kfLanguage==='ha'?'Canja ko kashe PIN ɗinka mai lambobi 4':kfLanguage==='ar'?'تغيير أو تعطيل رقم التعريف الشخصي المكون من 4 أرقام':kfLanguage==='fr'?'Modifier ou désactiver votre PIN à 4 chiffres':'Change or disable your 4-digit PIN'):(kfLanguage==='ha'?'Ƙirƙiri PIN mai lambobi 4':kfLanguage==='ar'?'إنشاء رقم تعريف شخصي مكون من 4 أرقام':kfLanguage==='fr'?'Créer un PIN à 4 chiffres':'Create a 4-digit PIN')}</h2><form id="pinSettingsForm" class="form">${enabled?`<label class="wide">Current PIN<input name="current" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" required></label>`:''}<label class="wide">New PIN<input name="pin" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" required></label><label class="wide">Confirm new PIN<input name="confirm" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" required></label><div class="form-actions"><button class="primary">${kfLanguage==='ha''=>'Ajiye PIN':kfLanguage==='ar'?'حفظ رقم التعريف الشخصي':kfLanguage==='fr'?'Enregistrer le PIN':'Save PIN'}</button>${enabled?`<button type="button" class="secondary" id="disablePin">${kfLanguage==='ha'?'Kashe PIN':kfLanguage==='ar'?'تعطيل رقم التعريف الشخصي':kfLanguage==='fr'?'Désactiver le PIN':'Disable PIN'}</button>`:''}</div></form>`);$('#pinSettingsForm').onsubmit=async e=>{e.preventDefault();try{const f=Object.fromEntries(new FormData(e.target));if(!/^\d{4}$/.test(f.pin)||f.pin!==f.confirm)return toast(kfLanguage==='ha'?'Yi amfani da lambobi hudu iri ɗaya a cikin filayen biyu.':kfLanguage==='ar'?'استخدم نفس الأرقام الأربعة في كلا الحقلين.':kfLanguage==='fr'?'Utilisez les mêmes quatre chiffres dans les deux champs.':'Use the same four numbers in both fields.');if(enabled&&await kfHashPin(f.current,profile.pinSalt)!==profile.pinHash)return toast(kfLanguage==='ha''=>'A halin yanzu PIN ba daidai ba ne.':kfLanguage==='ar'?'رقم التعريف الشخصي الحالي غير صحيح.':kfLanguage==='fr'?'Le PIN actuel n\'est pas correct.':'Current PIN is not correct.');const salt=kfRandomSalt(),hash=await kfHashPin(f.pin,salt);await updateDoc(doc(db,'users',auth.currentUser.uid),{pinHash:hash,pinSalt:salt,pinEnabled:true,updatedAt:serverTimestamp()});Object.assign(profile,{pinHash:hash,pinSalt:salt,pinEnabled:true});closeModal();toast(kfLanguage==='ha''=>'An adana PIN cikin nasara.':kfLanguage==='ar'?'تم حفظ رقم التعريف الشخصي بنجاح.':kfLanguage==='fr'?'PIN enregistré avec succès.':'PIN saved successfully.');render()}catch(error){toast(error.code==='permission-denied'?'Could not save PIN. Please publish the latest Firestore rules.':'Could not save PIN. Please try again.')}};$('#disablePin')?.addEventListener('click',async()=>{try{const current=$('[name="current"]')?.value;if(!/^\d{4}$/.test(current)||await kfHashPin(current,profile.pinSalt)!==profile.pinHash)return toast(kfLanguage==='ha''=>'Shigar da daidaitaccen PIN na yanzu da farko.':kfLanguage==='ar'?'أدخل رقم التعريف الشخصي الحالي الصحيح أولاً.':kfLanguage==='fr'?'Entrez d\'abord votre PIN actuel correct.':'Enter your correct current PIN first.');await updateDoc(doc(db,'users',auth.currentUser.uid),{pinHash:null,pinSalt:null,pinEnabled:false,updatedAt:serverTimestamp()});Object.assign(profile,{pinHash:null,pinSalt:null,pinEnabled:false});closeModal();toast(kfLanguage==='ha''=>'An kashe PIN na manhaja.':kfLanguage==='ar'?'تم تعطيل رقم التعريف الشخصي للتطبيق.':kfLanguage==='fr'?'PIN de l\'application désactivé.':'App PIN disabled.');render()}catch(error){toast('Could not disable PIN. Please try again.')}})}
+
+/* ========== AUTH STATE ========== */
+onAuthStateChanged(auth,async user=>{
+  if(signupInProgress)return;
+  $('#splash').hidden=true;
+  if(!user){profile=null;businessId=null;unsub.forEach(x=>x());unsub=[];$('#app').hidden=true;$('#auth').hidden=false;return}
+  try{
+    let snap=await getDoc(doc(db,'users',user.uid));
+    if(!snap.exists())return recoverProfile(user);
+    profile=snap.data();
+    kfLanguage=['en','ha','ar','fr'].includes(profile.language)?profile.language:'en';
+    kfApplyTheme(profile.theme||'dark');
+    businessId=profile.businessId;
+    if(!businessId)return recoverProfile(user);
+    let business=await getDoc(doc(db,'businesses',businessId));
+    if(!business.exists())return recoverProfile(user);
+    $('#userName').textContent=profile.fullName;
+    $('#userInitial').textContent=profile.fullName[0].toUpperCase();
+    $('#auth').hidden=true;
+    if(kfPinGate())return;
+    $('#app').hidden=false;
+    listen();
+    render();
+  }catch(e){toast('Could not open your business data.')}
+});
+
+async function recoverProfile(user){
+  $('#app').hidden=true;$('#auth').hidden=false;
+  $('#auth').innerHTML=`<section class="auth-card"><img class="mobile-logo" src="https://i.postimg.cc/XYrDGNX8/D90E30FC-437C-4185-8C32-AC9A848B5098.png" alt="KudiFlow"><p class="eyebrow">COMPLETE SETUP</p><h2>
+html
