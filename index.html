@@ -28,7 +28,6 @@ html[dir="rtl"]{direction:rtl}html[dir="rtl"] .nav,html[dir="rtl"] .sheet-row,ht
   messagingSenderId: '1033482416557',
   appId: '1:1033482416557:web:5fdc7a0a9ee50b69ba7124'
 };
-const fb=initializeApp(firebaseConfig),auth=getAuth(fb),db=getFirestore(fb),KF_ADMIN_UID='HrTIWwy3YbPpeMBzVjSEeSsAXxz1';let profile=null,businessId=null,data={customers:[],products:[],orders:[],expenses:[]},unsub=[],signupInProgress=false;const $=s=>document.querySelector(s),money=n=>new Intl.NumberFormat('en-NG',{style:'currency',currency:'NGN',maximumFractionDigits:0}).format(Number(n||0)),toast=(m,type='')=>{let t=$('#toast');t.textContent=m;t.className='show '+type;setTimeout(()=>t.className='',3300)};
 const fb=initializeApp(firebaseConfig),auth=getAuth(fb),db=getFirestore(fb),KF_ADMIN_UIDS=['QQm1tnRnDvSZ275b1zS8SVJDbDr1','HrTIWwy3YbPpeMBzVjSEeSsAXxz1'];let profile=null,businessId=null,data={customers:[],products:[],orders:[],expenses:[]},unsub=[],signupInProgress=false;const $=s=>document.querySelector(s),money=n=>new Intl.NumberFormat('en-NG',{style:'currency',currency:'NGN',maximumFractionDigits:0}).format(Number(n||0)),toast=(m,type='')=>{let t=$('#toast');t.textContent=m;t.className='show '+type;setTimeout(()=>t.className='',3300)};
 function cleanPhone(v){let n=v.replace(/\D/g,'');if(n.startsWith('0'))n='234'+n.slice(1);if(!n.startsWith('234'))n='234'+n;return n}function status(total,paid){return paid>=total?'PAID':paid>0?'PARTIALLY_PAID':'OWING'}function openModal(html,options={}){$('#modalContent').innerHTML=html;$('#modal').dataset.locked=options.locked?'true':'';$('#modal').hidden=false}function closeModal(){$('#modal').hidden=true;delete $('#modal').dataset.locked}$('#closeModal').onclick=()=>{if(!$('#modal').dataset.locked)closeModal()};$('#modal').onclick=e=>{if(e.target===$('#modal')&&!$('#modal').dataset.locked)closeModal()};
 async function signup(e){e.preventDefault();signupInProgress=true;let name=$('#fullName').value.trim(),biz=$('#businessName').value.trim(),email=$('#signupEmail').value.trim(),password=$('#signupPassword').value,phone=$('#phone').value.trim();if(password!==$('#confirmPassword').value)return toast('Passwords do not match.');try{let c=await createUserWithEmailAndPassword(auth,email,password),bid=crypto.randomUUID(),now=serverTimestamp();await setDoc(doc(db,'businesses',bid),{name:biz,ownerId:c.user.uid,phone,currency:'NGN',createdAt:now,updatedAt:now});await setDoc(doc(db,'users',c.user.uid),{uid:c.user.uid,fullName:name,email,phone,businessId:bid,role:'owner',businessName:biz,trialEligible:true,createdAt:now,updatedAt:now});signupInProgress=false;toast('Your KudiFlow account is ready.');setTimeout(()=>location.reload(),300)}catch(e){signupInProgress=false;toast(e.code==='auth/email-already-in-use'?'This email already has an account.':'Could not create account. Please try again.')}}
@@ -96,7 +95,6 @@ let kfLogoTaps=0,kfLogoTimer=null,kfAdminGestureRequested=false;
 document.querySelectorAll('.brand img,.brand-panel img,.mobile-logo').forEach(logo=>logo.addEventListener('pointerup',event=>{event.preventDefault();kfLogoTaps++;clearTimeout(kfLogoTimer);kfLogoTimer=setTimeout(()=>kfLogoTaps=0,3500);if(kfLogoTaps===7)kfHiddenAdminAccess()}));
 
 // Firestore-only Premium and manual OPay workflow. No Worker, Storage or external payment service is used.
-const kfIsAdminUser=()=>auth.currentUser?.uid===KF_ADMIN_UID;
 const kfIsAdminUser=()=>KF_ADMIN_UIDS.includes(auth.currentUser?.uid);
 const kfPremiumAccess=()=>kfIsAdminUser()||(profile?.premium===true&&profile.premiumExpiresAt?.toDate?.()>new Date());
 async function kfOpayConfig(){const snapshot=await getDoc(doc(db,'platformConfig','manualOpay'));return snapshot.exists()?snapshot.data():{accountName:'Ali Modu Aji',accountNumber:'9166704471',amount:2500,instructions:'Make the payment using OPay, then return here and submit your payment reference.'}}
@@ -124,6 +122,7 @@ const kfSettingsWithAdmin=settings;settings=function(c){kfSettingsWithAdmin(c);i
 
 
 </script></body></html>
+
 
 
 
