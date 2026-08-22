@@ -107,6 +107,10 @@ async function kfAdminDashboard(){if(!kfIsAdminUser()){page='dashboard';return r
 async function kfHiddenAdminAccess(){kfLogoTaps=0;if(!auth.currentUser){kfAdminGestureRequested=true;return}if(!kfIsAdminUser())return toast('Access denied.');kfAdminGestureRequested=false;kfIsAdmin=true;page='admin';render()}
 const kfSettingsWithAdmin=settings;settings=function(c){kfSettingsWithAdmin(c);if(!kfIsAdminUser())return;const adminPanel=document.createElement('section');adminPanel.className='panel';adminPanel.innerHTML='<p class="eyebrow">ADMINISTRATOR</p><h2>Admin Dashboard</h2><p>Manage Premium access and manual OPay payments.</p><button class="primary" id="openAdminDashboard">Open Admin Dashboard</button>';c.append(adminPanel);$('#openAdminDashboard').onclick=()=>{kfIsAdmin=true;page='admin';render()}}
 
+// Do not read a non-existent request first: Firestore correctly rejects that
+// privacy-sensitive read. A create-only write lets the rules reject duplicates.
+manualOpayForm=async()=>{try{const info=await kfOpayConfig();openModal(`<p class="eyebrow">MANUAL PAYMENT</p><h2>Pay with OPay</h2><p>Premium is <b>${money(info.amount)} / year</b>. Transfer exactly this amount to:</p><div class="notice"><b>${info.accountName}</b><br>OPay account: <b>${info.accountNumber}</b></div><p>${info.instructions}</p><form id="opayForm" class="form"><label>Amount paid<input name="amount" type="number" value="${info.amount}" readonly required></label><label>Payment date<input name="paymentDate" type="date" required></label><label class="wide">OPay transaction ID / reference<input name="reference" required></label><label class="wide">Note (optional)<textarea name="note"></textarea></label><button class="primary">Submit payment for verification</button></form>`);$('#opayForm').onsubmit=async event=>{event.preventDefault();try{const form=Object.fromEntries(new FormData(event.target));await setDoc(doc(db,'manualPaymentRequests',kfPaymentId(form.reference)),{userId:auth.currentUser.uid,userName:profile.fullName||'',userEmail:profile.email||auth.currentUser.email||'',amount:Number(form.amount),transactionReference:form.reference.trim(),paymentDate:form.paymentDate,note:form.note.trim(),status:'pending',submittedAt:serverTimestamp()});closeModal();toast('Payment submitted successfully. Your payment is awaiting verification.')}catch(error){toast(error.code==='permission-denied'?'This reference was already submitted, or the Firestore rules have not been published.':error.message||'Could not submit payment.')}}}catch(error){toast(error.message||'Could not open OPay payment details.')}};
+
 
 
 
@@ -122,6 +126,7 @@ const kfSettingsWithAdmin=settings;settings=function(c){kfSettingsWithAdmin(c);i
 
 
 </script></body></html>
+
 
 
 
