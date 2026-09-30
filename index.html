@@ -124,6 +124,112 @@ manualOpayForm=async()=>{try{const info=await kfOpayConfig();openModal(`<p class
 
 
 
+<!-- sVn Business Phase 1: paste this whole block once, right before </body> in index.html -->
+<style>
+/* sVn Business — Phase 1 theme layer. Load AFTER the existing <style> blocks. */
+:root{--bg:#0a0c12;--s1:rgba(22,26,38,.78);--s2:#151927;--bd:rgba(255,255,255,.09);--tx:#eef1f8;--mu:#98a1b6;--ac:#4d6bff;--ac2:#8a5cff;--ok:#2fd39a;--bad:#ff6b7a;--sh:0 10px 30px rgba(0,0,0,.35);color-scheme:dark}
+html[data-theme=light]{--bg:#f3f5fa;--s1:rgba(255,255,255,.82);--s2:#fff;--bd:rgba(20,30,70,.09);--tx:#141a2e;--mu:#5b647c;--ac:#3a55f0;--ac2:#7a4df0;--ok:#0a9f6e;--bad:#d6364a;--sh:0 8px 24px rgba(30,40,90,.09);color-scheme:light}
+@media(prefers-color-scheme:light){html[data-theme=system]{--bg:#f3f5fa;--s1:rgba(255,255,255,.82);--s2:#fff;--bd:rgba(20,30,70,.09);--tx:#141a2e;--mu:#5b647c;--ac:#3a55f0;--ac2:#7a4df0;--ok:#0a9f6e;--bad:#d6364a;--sh:0 8px 24px rgba(30,40,90,.09);color-scheme:light}}
+html[data-theme] body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg)!important;color:var(--tx)!important;overflow-x:hidden}
+html[data-theme] :is(#app,.auth,.workspace,.splash){background:var(--bg)!important;color:var(--tx)}
+html[data-theme] .workspace{background:radial-gradient(900px 400px at 100% -10%,color-mix(in srgb,var(--ac) 16%,transparent),transparent 60%),var(--bg)!important}
+html[data-theme] :is(aside,.app-header){background:var(--s1)!important;border-color:var(--bd)!important;backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);color:var(--tx)!important}
+html[data-theme] :is(.stat,.panel,.modal-card,.debt-card){background:var(--s1)!important;border:1px solid var(--bd)!important;border-radius:20px;box-shadow:var(--sh)!important;color:var(--tx)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+html[data-theme] .stat:after{display:none}
+html[data-theme] .stats .stat:first-child{background:linear-gradient(135deg,var(--ac),var(--ac2))!important;border:0!important}
+html[data-theme] .stats .stat:first-child :is(p,h3,small){color:#fff!important}
+html[data-theme] :is(h1,h2,h3,b,.brand,.stat h3,.row b,.panel h2,.toolbar h2){color:var(--tx)!important;font-family:inherit;letter-spacing:-.02em}
+html[data-theme] :is(.stat p,.row p,p,small,.table th,.sheet-row p,.eyebrow){color:var(--mu)!important}
+html[data-theme] .eyebrow{letter-spacing:.06em;font-weight:600}
+html[data-theme] :is(.row,.table td,.table th,.sheet-row){border-color:var(--bd)!important}
+html[data-theme] :is(input,select,textarea){background:var(--s2)!important;color:var(--tx)!important;border:1px solid var(--bd)!important;border-radius:12px}
+html[data-theme] :is(input,select,textarea):focus{border-color:var(--ac)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 25%,transparent)!important}
+html[data-theme] .primary{background:linear-gradient(135deg,var(--ac),var(--ac2))!important;color:#fff!important;border-radius:12px;box-shadow:0 8px 20px color-mix(in srgb,var(--ac) 35%,transparent)!important;transition:transform .15s}
+html[data-theme] .primary:active{transform:scale(.97)}
+html[data-theme] .secondary{background:var(--s2)!important;color:var(--tx)!important;border:1px solid var(--bd)!important;border-radius:12px}
+html[data-theme] :is(.action,.link){color:var(--ac)!important}
+html[data-theme] .nav{color:var(--mu)!important;border-radius:12px}
+html[data-theme] .nav:is(.active,:hover){background:color-mix(in srgb,var(--ac) 14%,transparent)!important;color:var(--ac)!important}
+html[data-theme] .danger,html[data-theme] .debt-amount :is(b,span){color:var(--bad)!important}
+html[data-theme] .badge.paid{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+html[data-theme] .user span{background:linear-gradient(135deg,var(--ac),var(--ac2))!important;box-shadow:none}
+html[data-theme] .brand-panel{background:linear-gradient(145deg,#0b1030,#2a2f8f 60%,#6a43d8)!important}
+html[data-theme] .brand-panel :is(h1,p,.eyebrow){color:#fff!important}
+html[data-theme] .brand img,html[data-theme] .brand-panel img,html[data-theme] .mobile-logo{border-radius:14px;background:none!important}
+html[data-theme] .modal{background:rgba(5,8,18,.55);backdrop-filter:blur(6px)}
+.table-wrap{overflow-x:auto}
+
+/* Navigation: old bottom bar replaced by glass pill + "More" sheet (mobile only) */
+.mobile-bottom-nav{display:none!important}
+.svn-nav,.svn-sheet{display:none}
+@media(max-width:700px){
+ .svn-nav{display:flex;position:fixed;z-index:15;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));width:min(440px,calc(100% - 24px));padding:6px;gap:2px;border-radius:26px;background:var(--s1);border:1px solid var(--bd);box-shadow:var(--sh);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5)}
+ #app[hidden]~.svn-nav{display:none}
+ .svn-nav button{flex:1;min-width:0;display:grid;place-items:center;gap:2px;padding:8px 2px;border:0;border-radius:20px;background:none;color:var(--mu);font-size:10.5px;font-weight:600;transition:background .2s,color .2s}
+ .svn-nav button.on{background:color-mix(in srgb,var(--ac) 16%,transparent);color:var(--ac)}
+ .svn-nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+ .svn-nav .more svg{fill:currentColor;stroke:none}
+ .svn-sheet{display:grid;position:fixed;z-index:14;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));width:min(440px,calc(100% - 24px));grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;border-radius:24px;background:var(--s1);border:1px solid var(--bd);box-shadow:var(--sh);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);transform:translate(-50%,16px) scale(.96);opacity:0;pointer-events:none;transition:.22s cubic-bezier(.2,.8,.2,1)}
+ .svn-sheet.open{transform:translate(-50%,0) scale(1);opacity:1;pointer-events:auto}
+ .svn-sheet button{display:grid;place-items:center;gap:4px;padding:14px 4px;border:1px solid var(--bd);border-radius:16px;background:var(--s2);color:var(--tx);font-size:12px;font-weight:600}
+ .svn-sheet button i{font-style:normal;font-size:20px;color:var(--ac)}
+ .page{padding-bottom:calc(120px + env(safe-area-inset-bottom))!important}
+ .app-header #mobileMenu{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<script>
+/* sVn Business — Phase 1. Load with <script defer src="svn-phase1.js"></script> AFTER the main module script. */
+(()=>{
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)],NAME='sVn Business',KEY='svn-theme',root=document.documentElement;
+
+/* Theme: persisted locally, applied before login so the login screen matches. */
+let saved='dark';try{saved=localStorage.getItem(KEY)||'dark'}catch{}
+root.dataset.theme=['dark','light','system'].includes(saved)?saved:'dark';
+new MutationObserver(()=>{try{localStorage.setItem(KEY,root.dataset.theme)}catch{}}).observe(root,{attributes:true,attributeFilter:['data-theme']});
+
+/* Temporary monogram logo until the real logo file is converted to icons. */
+const ico='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4d6bff"/><stop offset="1" stop-color="#8a5cff"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><text x="32" y="41" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="800" font-size="24" fill="#fff">sVn</text></svg>');
+
+/* Rebrand: visible text, title, logos, meta. Firebase IDs are not touched. */
+function rebrand(){
+  if(document.title.includes('KudiFlow'))document.title=NAME+' — Business clarity, every day';
+  $$('img').forEach(i=>{if(i.src!==ico&&(i.closest('.brand,.brand-panel,.auth-card,#splash,.native-pin')||/kudi/i.test(i.alt))){i.src=ico;i.alt=NAME}});
+  const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
+  while(n=w.nextNode()){if(n.nodeValue.includes('KudiFlow')&&!/^(SCRIPT|STYLE)$/.test(n.parentElement?.tagName))n.nodeValue=n.nodeValue.replaceAll('KudiFlow',NAME)}
+  $$('[alt*=Kudi]').forEach(e=>e.alt=NAME);
+  [['link[rel=icon]',ico],['link[rel=apple-touch-icon]',ico]].forEach(([s,h])=>{const l=$(s);if(l&&l.href!==h)l.href=h});
+  $('meta[name=description]')?.setAttribute('content',NAME+' business tracker');
+}
+
+/* Navigation: drives the existing sidebar buttons, so all current routing keeps working. */
+const I={dashboard:'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',orders:'<path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/>',customers:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M17 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6 6 0 0 0-4-5.6"/>',products:'<path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/>',more:'<circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/>'};
+const main=[['dashboard','Home'],['orders','Orders'],['customers','Customers'],['products','Products']];
+const nav=document.createElement('nav'),sheet=document.createElement('div');
+nav.className='svn-nav';nav.setAttribute('aria-label','Primary');sheet.className='svn-sheet';
+nav.innerHTML=main.map(([p,l])=>`<button data-p="${p}"><svg viewBox="0 0 24 24">${I[p]}</svg>${l}</button>`).join('')+`<button class="more" data-p="more"><svg viewBox="0 0 24 24">${I.more}</svg>More</button>`;
+document.body.append(nav,sheet);
+const side=p=>$(`aside .nav[data-page="${p}"]`);
+function buildSheet(){
+  const ids=main.map(m=>m[0]);
+  sheet.innerHTML='';
+  $$('aside .nav').filter(b=>!ids.includes(b.dataset.page)).forEach(b=>{
+    const t=document.createElement('button'),lab=b.querySelector('span')?.textContent||b.textContent.trim();
+    t.innerHTML=`<i>${b.childNodes[0].textContent.trim()||'•'}</i>${lab}`;
+    t.onclick=()=>{sheet.classList.remove('open');b.click()};sheet.append(t)});
+}
+nav.onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.p==='more'){buildSheet();sheet.classList.toggle('open');return}
+  sheet.classList.remove('open');side(b.dataset.p)?.click()};
+document.addEventListener('click',e=>{if(!e.target.closest('.svn-nav,.svn-sheet'))sheet.classList.remove('open')});
+function sync(){const a=$('aside .nav.active')?.dataset.page||'dashboard',inMain=main.some(m=>m[0]===a);
+  $$('button',nav).forEach(b=>b.classList.toggle('on',b.dataset.p===a||(b.dataset.p==='more'&&!inMain)))}
+
+let q=0;const run=()=>{cancelAnimationFrame(q);q=requestAnimationFrame(()=>{rebrand();sync()})};
+new MutationObserver(run).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden']});
+run();
+})();
+</script>
 
 </script></body></html>
 
