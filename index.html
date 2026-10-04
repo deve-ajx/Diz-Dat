@@ -135,6 +135,12 @@ html[data-xp=pro] .pg>*{animation:rise .45s ease both}
 .pxg{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pxg .card{padding:14px}.pxg p{font-size:12px;color:var(--muted);margin-top:10px}.pxg b{font-size:18px;display:block;margin-top:2px}
 .pxr{display:flex;align-items:center;gap:16px}.pxr svg{width:76px;height:76px;flex:none}.pxr b{font-size:17px}
 .dock{display:flex;justify-content:space-around;padding:10px;border-radius:26px;background:rgba(255,255,255,.05);border:1px solid var(--line)}.dock button{display:flex;flex-direction:column;align-items:center;gap:5px;border:0;background:none;color:var(--acc2);font-size:11px;font-weight:700;padding:6px 10px}.dock span{color:var(--ink);font-weight:600}
+/* v6: fix pages wider than the screen (Staff) + header wrapping */
+.pg{grid-template-columns:minmax(0,1fr)}.pg>*{min-width:0}.card{overflow:hidden}
+.tw{max-width:100%;-webkit-overflow-scrolling:touch}
+.rw>div,.rw>span{min-width:0;overflow-wrap:anywhere}.rw:has(.chips){flex-wrap:wrap}
+.bdg{display:inline-flex;align-items:center;white-space:nowrap}
+.hl{min-width:0;flex:1}header h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.who{flex:none}
 </style></head><body>
 <div id="toast"></div><main id="auth" hidden></main>
 <div id="app" hidden><aside id="side"></aside><section><header><div class="hl"><img class="hlg" id="hlg" alt="sVn Business"><div><p class="ey" id="kick"></p><h1 id="ttl"></h1></div></div><div class="who"><span id="sync" class="sync"></span><span id="uname" class="mut"></span><span id="hpro"></span><button class="ib" id="bell" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7M10 20a2 2 0 0 0 4 0"/></svg></button><span id="hav"></span></div></header><div id="content"></div></section><nav id="bnav"></nav></div>
